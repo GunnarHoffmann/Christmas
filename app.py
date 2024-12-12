@@ -31,8 +31,11 @@ st.markdown(
 
 st.markdown('<div class="title">🎅 Welcome to Santa Claus\' Greeting App! 🎅</div>', unsafe_allow_html=True)
 
+# Add a slider for image scaling
+scaling_factor = st.slider("Scale Santa's image:", min_value=0.1, max_value=1.0, value=0.5, step=0.1)
+
 santa_image_url = "https://i.pinimg.com/736x/3a/d4/ae/3ad4aebc7cb02fe7ae7fac12dbd41c13.jpg"
-st.image(santa_image_url, caption="Santa Claus is here to spread joy!", use_column_width=True)
+st.image(santa_image_url, caption="Santa Claus is here to spread joy!", use_column_width=False, width=int(736 * scaling_factor))
 
 st.markdown('<div class="content">Hello and welcome! Santa Claus is delighted to greet you this festive season. 🎄✨</div>', unsafe_allow_html=True)
 
