@@ -102,7 +102,7 @@ if st.button(hello_button):
 
 # Generate random numbers
 if st.button(generate_button):
-    random_numbers = [random.randint(1, 100) for _ in range(10)]
+    random_numbers = [random.random() for _ in range(10)]
     st.markdown(f'<div class="content">{number_message}</div>', unsafe_allow_html=True)
     st.write(random_numbers)
 
