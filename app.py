@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import datetime
 from gtts import gTTS
 import os
+import random
 
 # Set the page title and icon
 st.set_page_config(page_title="Santa Claus Greeting App", page_icon="🎅", layout="centered")
@@ -20,6 +21,8 @@ if language == "Deutsch":
     explore_message = "Erkunde die App und genieße die festliche Stimmung!"
     hello_button = "Sag dem Weihnachtsmann Hallo 🎅"
     hello_response = "Der Weihnachtsmann sagt Hallo zurück! 🎅✨"
+    generate_button = "Generiere 10 Zufallszahlen"
+    number_message = "Hier sind 10 zufällige Zahlen, die der Weihnachtsmann für dich generiert hat:"
 else:
     lang_code = 'en'
     title = "🎅 Welcome to Santa Claus' Greeting App! 🎅"
@@ -31,6 +34,8 @@ else:
     explore_message = "Feel free to explore the app and enjoy the holiday cheer!"
     hello_button = "Say Hi to Santa 🎅"
     hello_response = "Santa says Hi back! 🎅✨"
+    generate_button = "Generate 10 Random Numbers"
+    number_message = "Here are 10 random numbers Santa generated for you:"
 
 # Main content
 st.markdown(
@@ -94,4 +99,11 @@ st.markdown(f'<div class="content">{explore_message}</div>', unsafe_allow_html=T
 st.markdown('<div style="text-align: center; margin-top: 20px;">', unsafe_allow_html=True)
 if st.button(hello_button):
     st.markdown(f'<div class="content">{hello_response}</div>', unsafe_allow_html=True)
+
+# Generate random numbers
+if st.button(generate_button):
+    random_numbers = [random.randint(1, 100) for _ in range(10)]
+    st.markdown(f'<div class="content">{number_message}</div>', unsafe_allow_html=True)
+    st.write(random_numbers)
+
 st.markdown('</div>', unsafe_allow_html=True)
