@@ -3,6 +3,8 @@ from datetime import datetime
 from gtts import gTTS
 import os
 import random
+from sklearn.cluster import KMeans
+import numpy as np
 
 # Set the page title and icon
 st.set_page_config(page_title="Santa Claus Greeting App", page_icon="🎅", layout="centered")
@@ -23,6 +25,7 @@ if language == "Deutsch":
     hello_response = "Der Weihnachtsmann sagt Hallo zurück! 🎅✨"
     generate_button = "Generiere 10 Zufallszahlen"
     number_message = "Hier sind 10 zufällige Zahlen, die der Weihnachtsmann für dich generiert hat:"
+    cluster_message = "Hier sind die Cluster, die der Weihnachtsmann erstellt hat:"
 else:
     lang_code = 'en'
     title = "🎅 Welcome to Santa Claus' Greeting App! 🎅"
@@ -36,6 +39,7 @@ else:
     hello_response = "Santa says Hi back! 🎅✨"
     generate_button = "Generate 10 Random Numbers"
     number_message = "Here are 10 random numbers Santa generated for you:"
+    cluster_message = "Here are the clusters Santa created:"
 
 # Main content
 st.markdown(
@@ -100,10 +104,20 @@ st.markdown('<div style="text-align: center; margin-top: 20px;">', unsafe_allow_
 if st.button(hello_button):
     st.markdown(f'<div class="content">{hello_response}</div>', unsafe_allow_html=True)
 
-# Generate random numbers
+# Generate random numbers and cluster them
 if st.button(generate_button):
     random_numbers = [random.random() for _ in range(10)]
     st.markdown(f'<div class="content">{number_message}</div>', unsafe_allow_html=True)
     st.write(random_numbers)
+
+    # Clustering using K-Means
+    data = np.array(random_numbers).reshape(-1, 1)
+    kmeans = KMeans(n_clusters=3, random_state=42)
+    kmeans.fit(data)
+    labels = kmeans.labels_
+
+    st.markdown(f'<div class="content">{cluster_message}</div>', unsafe_allow_html=True)
+    for i, label in enumerate(labels):
+        st.write(f"Number: {random_numbers[i]:.3f} -> Cluster: {label}")
 
 st.markdown('</div>', unsafe_allow_html=True)
