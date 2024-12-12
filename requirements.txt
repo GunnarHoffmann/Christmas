@@ -1,3 +1,4 @@
 streamlit
-gTTS
-sklearn
+numpy
+scikit-learn
+gtts
