@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+from datetime import datetime
 
 # Set the page title and icon
 st.set_page_config(page_title="Santa Claus Welcome", page_icon="🎅")
@@ -20,8 +21,17 @@ except FileNotFoundError:
 
 st.write("Hello and welcome! Santa Claus is delighted to greet you this festive season. 🎄✨")
 
+# Calculate days until 24th December
+today = datetime.now()
+target_date = datetime(today.year, 12, 24)
+days_remaining = (target_date - today).days
+
+if days_remaining >= 0:
+    st.write(f"There are **{days_remaining} days** remaining until 24th December! 🎁")
+else:
+    st.write("It's already past 24th December! Hope you had a great holiday! 🎅")
+
 st.write("\nFeel free to explore the app and enjoy the holiday cheer!")
 
 # Add an interactive element
 st.button("Say Hi to Santa 🎅")
-
