@@ -51,7 +51,7 @@ target_date = datetime(today.year, 12, 24)
 days_remaining = (target_date - today).days
 
 if days_remaining >= 0:
-    st.markdown(f'<div class="days-remaining">There are **{days_remaining} days** remaining until 24th December! 🎁</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="days-remaining">There are <strong>{days_remaining} days</strong> remaining until 24th December! 🎁</div>', unsafe_allow_html=True)
 else:
     st.markdown('<div class="days-remaining">It\'s already past 24th December! Hope you had a great holiday! 🎅</div>', unsafe_allow_html=True)
 
@@ -60,4 +60,5 @@ st.markdown('<div class="content">Feel free to explore the app and enjoy the hol
 # Add an interactive element
 st.markdown('<div style="text-align: center; margin-top: 20px;">', unsafe_allow_html=True)
 if st.button("Say Hi to Santa 🎅"):
-    st.markdown('<div class="content">Santa says Hi back! 🎅✨</div>', unsafe_al
+    st.markdown('<div class="content">Santa says Hi back! 🎅✨</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
