@@ -1,13 +1,8 @@
 import streamlit as st
-from PIL import Image
 from datetime import datetime
 
 # Set the page title and icon
 st.set_page_config(page_title="Santa Claus Welcome", page_icon="🎅", layout="centered")
-
-# Display a festive image
-def load_santa_image():
-    return Image.open("santa_claus.jpg")  # Ensure you have a suitable image in the same directory
 
 # Main content
 st.markdown(
@@ -36,12 +31,8 @@ st.markdown(
 
 st.markdown('<div class="title">🎅 Welcome to Santa Claus\' Greeting App! 🎅</div>', unsafe_allow_html=True)
 
-santa_image = None
-try:
-    santa_image = load_santa_image()
-    st.image(santa_image, caption="Santa Claus is here to spread joy!", use_column_width=True)
-except FileNotFoundError:
-    st.warning("Santa's picture is missing! Please ensure the 'santa_claus.jpg' file is in the app directory.")
+santa_image_url = "https://i.pinimg.com/736x/3a/d4/ae/3ad4aebc7cb02fe7ae7fac12dbd41c13.jpg"
+st.image(santa_image_url, caption="Santa Claus is here to spread joy!", use_column_width=True)
 
 st.markdown('<div class="content">Hello and welcome! Santa Claus is delighted to greet you this festive season. 🎄✨</div>', unsafe_allow_html=True)
 
