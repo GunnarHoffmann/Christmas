@@ -1,5 +1,7 @@
 import streamlit as st
 from datetime import datetime
+from gtts import gTTS
+import os
 
 # Set the page title and icon
 st.set_page_config(page_title="Santa Claus Welcome", page_icon="🎅", layout="centered")
@@ -48,6 +50,24 @@ if days_remaining >= 0:
     st.markdown(f'<div class="days-remaining">There are <strong>{days_remaining} days</strong> remaining until 24th December! 🎁</div>', unsafe_allow_html=True)
 else:
     st.markdown('<div class="days-remaining">It\'s already past 24th December! Hope you had a great holiday! 🎅</div>', unsafe_allow_html=True)
+
+# Text-to-Speech for Santa's message
+def play_santa_message():
+    if days_remaining >= 0:
+        message = f"Ho ho ho! There are {days_remaining} days remaining until Christmas Eve!"
+    else:
+        message = "Ho ho ho! Christmas Eve has already passed! I hope you had a wonderful time!"
+
+    tts = gTTS(text=message, lang='en')
+    audio_file = "santa_message.mp3"
+    tts.save(audio_file)
+    return audio_file
+
+if st.button("Hear Santa 🎅"):
+    audio_file = play_santa_message()
+    with open(audio_file, "rb") as file:
+        st.audio(file.read(), format="audio/mp3")
+    os.remove(audio_file)
 
 st.markdown('<div class="content">Feel free to explore the app and enjoy the holiday cheer!</div>', unsafe_allow_html=True)
 
