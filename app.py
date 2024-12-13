@@ -22,8 +22,6 @@ if language == "Deutsch":
     tts_message = lambda days: f"Ho ho ho! Es sind noch {days} Tage bis Heiligabend!" if days >= 0 else "Ho ho ho! Heiligabend ist schon vorbei! Ich hoffe, du hattest eine wundervolle Zeit!"
     hear_button = "Höre den Weihnachtsmann 🎅"
     explore_message = "Erkunde die App und genieße die festliche Stimmung!"
-    hello_button = "Sag dem Weihnachtsmann Hallo 🎅"
-    hello_response = "Der Weihnachtsmann sagt Hallo zurück! 🎅✨"
     generate_button = "Generiere 10 Zufallszahlen"
     number_message = "Hier sind 10 zufällige Zahlen, die der Weihnachtsmann für dich generiert hat:"
     cluster_message = "Hier sind die Cluster, die der Weihnachtsmann erstellt hat:"
@@ -36,8 +34,6 @@ else:
     tts_message = lambda days: f"Ho ho ho! There are {days} days remaining until Christmas Eve!" if days >= 0 else "Ho ho ho! Christmas Eve has already passed! I hope you had a wonderful time!"
     hear_button = "Hear Santa 🎅"
     explore_message = "Feel free to explore the app and enjoy the holiday cheer!"
-    hello_button = "Say Hi to Santa 🎅"
-    hello_response = "Santa says Hi back! 🎅✨"
     generate_button = "Generate 10 Random Numbers"
     number_message = "Here are 10 random numbers Santa generated for you:"
     cluster_message = "Here are the clusters Santa created:"
@@ -99,11 +95,6 @@ if st.button(hear_button):
     os.remove(audio_file)
 
 st.markdown(f'<div class="content">{explore_message}</div>', unsafe_allow_html=True)
-
-# Add an interactive element
-st.markdown('<div style="text-align: center; margin-top: 20px;">', unsafe_allow_html=True)
-if st.button(hello_button):
-    st.markdown(f'<div class="content">{hello_response}</div>', unsafe_allow_html=True)
 
 # Generate random numbers and cluster them
 if st.button(generate_button):
