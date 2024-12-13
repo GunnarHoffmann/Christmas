@@ -5,6 +5,7 @@ import os
 import random
 from sklearn.cluster import KMeans
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Set the page title and icon
 st.set_page_config(page_title="Santa Claus Greeting App", page_icon="🎅", layout="centered")
@@ -117,7 +118,18 @@ if st.button(generate_button):
     labels = kmeans.labels_
 
     st.markdown(f'<div class="content">{cluster_message}</div>', unsafe_allow_html=True)
-    for i, label in enumerate(labels):
-        st.write(f"Number: {random_numbers[i]:.3f} -> Cluster: {label}")
+
+    # Visualize Clusters
+    plt.figure(figsize=(8, 6))
+    colors = ['red', 'blue', 'green']
+    for i in range(3):
+        cluster_points = data[labels == i]
+        plt.scatter(cluster_points, [0] * len(cluster_points), color=colors[i], label=f"Cluster {i}", s=100)
+
+    plt.xlabel("Values", fontsize=14)
+    plt.title("Clusters of Generated Numbers", fontsize=16)
+    plt.legend()
+    plt.grid(True)
+    st.pyplot(plt)
 
 st.markdown('</div>', unsafe_allow_html=True)
