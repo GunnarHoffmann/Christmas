@@ -81,8 +81,7 @@ if st.button("BMI berechnen"):
 
     # BMI-Linie und Beschriftung darunter
     ax.axvline(bmi, color="black", linewidth=3)
-    ax.text(bmi, 0.05, f"{bmi:.1f}", ha='center', va='bottom', fontsize=10, weight='bold')  # Unterhalb der Linie
-
+    ax.text(bmi + 0.4, 0.05, f"{bmi:.1f}", ha='left', va='bottom', fontsize=10, weight='bold')
     # Achsenformatierung
     ax.set_xlim(10, 40)
     ax.set_ylim(0, 1.2)
