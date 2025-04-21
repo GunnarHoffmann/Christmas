@@ -1,14 +1,21 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-# --- Seitenlayout ---
-st.set_page_config(page_title="BMI Rechner", page_icon="⚖️", layout="centered")
+# --- Seitenlayout & Theme ---
+st.set_page_config(
+    page_title="BMI Rechner",
+    page_icon="⚖️",
+    layout="centered",
+    initial_sidebar_state="auto",
+    theme={"base": "light"}
+)
 
-# --- Stil: weißer Hintergrund & moderne Buttons ---
+# --- CSS-Stil: Weißer Hintergrund + moderne Buttons ---
 st.markdown("""
     <style>
-    .main {
+    html, body, .main {
         background-color: white !important;
+        color: black !important;
     }
     h1 {
         font-size: 1.8em;
@@ -44,7 +51,7 @@ Mit dem folgenden **BMI-Rechner** kannst du deinen persönlichen Wert berechnen 
 
 ---
 
-### Was kann man noch messen?
+### Fit mit Technik: Was dein Körper dir sonst noch sagt
 
 Der BMI ist nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
 
