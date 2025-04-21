@@ -1,14 +1,14 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-# --- Seitenlayout (ohne theme, kompatibel mit älteren Versionen) ---
+# --- Seitenlayout ---
 st.set_page_config(
     page_title="BMI Rechner",
     page_icon="⚖️",
     layout="centered"
 )
 
-# --- CSS-Stil: Weißer Hintergrund + moderne Buttons ---
+# --- CSS-Stil ---
 st.markdown("""
     <style>
     html, body, .main {
@@ -43,17 +43,13 @@ Ein einfaches, aber weit verbreitetes Maß zur Einschätzung des Körpergewichts
 
 ---
 
-### Was macht dieses Programm?
+### Fit mit Technik: Was dein Körper dir sonst noch sagt
 
 Mit dem folgenden **BMI-Rechner** kannst du deinen persönlichen Wert berechnen und in einer farblich gekennzeichneten Grafik sehen, in welche Kategorie dein Ergebnis fällt – von *Untergewicht* über *Normalgewicht* bis zu *Adipositas*. Die Darstellung macht deine Einordnung im Gesamtspektrum leicht verständlich.
 
----
+Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
 
-### Fit mit Technik: Was dein Körper dir sonst noch sagt
-
-Der BMI ist nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
-
-- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil. [Link einfügen]
+- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil. [Withings Body Comp](https://www.withings.com/de/de/body-comp)
 - **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr. [Link einfügen]
 
 In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
