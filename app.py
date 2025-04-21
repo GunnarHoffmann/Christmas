@@ -2,4 +2,4 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 
-st.image("http://gesundhait.de/bodycom.jpg")
+st.image("http://gesundhait.de/logo.jpg")
