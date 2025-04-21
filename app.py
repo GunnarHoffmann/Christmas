@@ -49,8 +49,13 @@ Mit dem folgenden **BMI-Rechner** kannst du deinen persönlichen Wert berechnen 
 
 Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
 
-- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil. [Withings Body Comp](https://www.withings.com/de/de/body-comp)
-- **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr. [Link einfügen]
+- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.  
+  [Withings Body Comp](https://www.withings.com/de/de/body-comp)  
+  ![Withings Body Comp](https://gesundheit.de/bodycomp.png)
+
+- **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.  
+  [Withings ScanWatch Nova](https://www.withings.com/de/de/scanwatch-nova)  
+  ![Withings ScanWatch Nova](https://gesundhait.de/swnova.png)
 
 In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
 
