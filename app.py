@@ -4,13 +4,14 @@ import matplotlib.pyplot as plt
 # --- Seitenlayout ---
 st.set_page_config(page_title="BMI Rechner", page_icon="⚖️", layout="centered")
 
-# --- Stil (zentriert und moderner Look) ---
+# --- Stil: weißer Hintergrund & moderne Buttons ---
 st.markdown("""
     <style>
     .main {
-        background-color: #f5f7fa;
+        background-color: white !important;
     }
     h1 {
+        font-size: 1.8em;
         color: #3e64ff;
         text-align: center;
     }
@@ -27,11 +28,32 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- Überschrift ---
-st.title("⚖️ BMI-Rechner mit Visualisierung")
-
+# --- Einführungstext ---
 st.markdown("""
-Berechne deinen **Body-Mass-Index (BMI)** und sieh auf einen Blick, wo du im Vergleich zu den offiziellen Kategorien stehst.
+### Gesundheit verstehen – Ernährung, Bewegung und mehr
+
+Eine ausgewogene **Ernährung** und regelmäßige **Bewegung** sind die Basis für körperliche und geistige Gesundheit. Sie tragen wesentlich dazu bei, Krankheiten vorzubeugen, das Wohlbefinden zu steigern und die Leistungsfähigkeit zu erhalten.
+
+Ein einfaches, aber weit verbreitetes Maß zur Einschätzung des Körpergewichts in Relation zur Körpergröße ist der **Body-Mass-Index (BMI)**. Auch wenn der BMI nicht zwischen Muskel- und Fettmasse unterscheidet und damit nur eine grobe Orientierung bietet, kann er helfen, erste Hinweise auf mögliche gesundheitliche Risiken zu geben.
+
+---
+
+### Was macht dieses Programm?
+
+Mit dem folgenden **BMI-Rechner** kannst du deinen persönlichen Wert berechnen und in einer farblich gekennzeichneten Grafik sehen, in welche Kategorie dein Ergebnis fällt – von *Untergewicht* über *Normalgewicht* bis zu *Adipositas*. Die Darstellung macht deine Einordnung im Gesamtspektrum leicht verständlich.
+
+---
+
+### Was kann man noch messen?
+
+Der BMI ist nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
+
+- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil. [Link einfügen]
+- **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr. [Link einfügen]
+
+In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
+
+---
 """)
 
 # --- Eingaben ---
@@ -39,9 +61,9 @@ st.subheader("Gib deine Daten ein")
 
 col1, col2 = st.columns(2)
 with col1:
-    gewicht = st.number_input("Gewicht (in kg)", min_value=30.0, max_value=300.0, value=75.0, help="Dein aktuelles Körpergewicht in Kilogramm")
+    gewicht = st.number_input("Gewicht (in kg)", min_value=30.0, max_value=300.0, value=75.0)
 with col2:
-    groesse = st.number_input("Größe (in cm)", min_value=100.0, max_value=250.0, value=175.0, help="Deine Körpergröße in Zentimetern")
+    groesse = st.number_input("Größe (in cm)", min_value=100.0, max_value=250.0, value=175.0)
 
 # --- Button ---
 if st.button("BMI berechnen"):
@@ -64,10 +86,9 @@ if st.button("BMI berechnen"):
 
     st.markdown(f"**Kategorie:** _{kategorie}_")
 
-    # --- Grafik erstellen ---
+    # --- Grafik ---
     fig, ax = plt.subplots(figsize=(8, 1.5))
 
-    # Bereiche und Farben
     bereiche = [
         (10, 18.5, 'Untergewicht', 'yellow'),
         (18.5, 25, 'Normalgewicht', 'green'),
@@ -79,10 +100,9 @@ if st.button("BMI berechnen"):
         ax.axvspan(start, end, color=color, alpha=0.5)
         ax.text((start + end) / 2, 0.7, label, ha='center', va='center', fontsize=9)
 
-    # BMI-Linie und Beschriftung darunter
     ax.axvline(bmi, color="black", linewidth=3)
     ax.text(bmi + 0.4, 0.05, f"{bmi:.1f}", ha='left', va='bottom', fontsize=10, weight='bold')
-    # Achsenformatierung
+
     ax.set_xlim(10, 40)
     ax.set_ylim(0, 1.2)
     ax.set_yticks([])
@@ -90,7 +110,3 @@ if st.button("BMI berechnen"):
     ax.set_title("Einordnung deines BMI", fontsize=12)
 
     st.pyplot(fig)
-
-# --- Footer ---
-st.markdown("---")
-st.caption("© BMI-Rechner | Erstellt mit Streamlit.")
