@@ -54,12 +54,12 @@ Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. W
 # --- Body Comp ---
 st.markdown("- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.")
 st.markdown("[Withings Body Comp ansehen](https://www.withings.com/de/de/body-comp)")
-st.image("https://gesundhait.de/bodycomp.png", caption="Withings Body Comp", use_container_width=True)
+st.image("http://gesundhait.de/bodycomp.png", caption="Withings Body Comp", use_container_width=True)
 
 # --- ScanWatch Nova ---
 st.markdown("- **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.")
 st.markdown("[Withings ScanWatch Nova ansehen](https://www.withings.com/de/de/scanwatch-nova)")
-st.image("https://gesundhait.de/swnova.png", caption="Withings ScanWatch Nova", use_container_width=True)
+st.image("http://gesundhait.de/swnova.png", caption="Withings ScanWatch Nova", use_container_width=True)
 
 st.markdown("""
 In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
