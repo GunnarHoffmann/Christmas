@@ -40,27 +40,31 @@ st.markdown("""
 Eine ausgewogene **Ernährung** und regelmäßige **Bewegung** sind die Basis für körperliche und geistige Gesundheit. Sie tragen wesentlich dazu bei, Krankheiten vorzubeugen, das Wohlbefinden zu steigern und die Leistungsfähigkeit zu erhalten.
 
 Ein einfaches, aber weit verbreitetes Maß zur Einschätzung des Körpergewichts in Relation zur Körpergröße ist der **Body-Mass-Index (BMI)**. Auch wenn der BMI nicht zwischen Muskel- und Fettmasse unterscheidet und damit nur eine grobe Orientierung bietet, kann er helfen, erste Hinweise auf mögliche gesundheitliche Risiken zu geben.
+""")
 
----
+st.markdown("---")
+st.markdown("### Fit mit Technik: Was dein Körper dir sonst noch sagt")
 
-### Fit mit Technik: Was dein Körper dir sonst noch sagt
-
+st.markdown("""
 Mit dem folgenden **BMI-Rechner** kannst du deinen persönlichen Wert berechnen und in einer farblich gekennzeichneten Grafik sehen, in welche Kategorie dein Ergebnis fällt – von *Untergewicht* über *Normalgewicht* bis zu *Adipositas*. Die Darstellung macht deine Einordnung im Gesamtspektrum leicht verständlich.
 
 Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
-
-- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.  
-  [Withings Body Comp](https://www.withings.com/de/de/body-comp)  
-  ![Withings Body Comp](http://gesundhait.de/bodycomp.png)
-
-- **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.  
-  [Withings ScanWatch Nova](https://www.withings.com/de/de/scanwatch-nova)  
-  ![Withings ScanWatch Nova](http://gesundhait.de/swnova.png)
-
-In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
-
----
 """)
+
+# --- Body Comp ---
+st.markdown("- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.")
+st.markdown("[Withings Body Comp ansehen](https://www.withings.com/de/de/body-comp)")
+st.image("https://gesundheit.de/bodycomp.png", caption="Withings Body Comp", use_column_width=True)
+
+# --- ScanWatch Nova ---
+st.markdown("- **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.")
+st.markdown("[Withings ScanWatch Nova ansehen](https://www.withings.com/de/de/scanwatch-nova)")
+st.image("https://gesundhait.de/swnova.png", caption="Withings ScanWatch Nova", use_column_width=True)
+
+st.markdown("""
+In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
+""")
+st.markdown("---")
 
 # --- Eingaben ---
 st.subheader("Gib deine Daten ein")
