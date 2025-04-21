@@ -8,6 +8,8 @@ st.set_page_config(
     layout="centered"
 )
 
+st.image("http://gesundhait.de/bodycomp.png", caption="Withings Body Comp")
+
 # --- CSS-Stil ---
 st.markdown("""
     <style>
