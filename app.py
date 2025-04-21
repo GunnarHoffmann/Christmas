@@ -51,11 +51,11 @@ Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. W
 
 - **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.  
   [Withings Body Comp](https://www.withings.com/de/de/body-comp)  
-  ![Withings Body Comp](https://gesundhait.de/bodycomp.png)
+  ![Withings Body Comp](http://gesundhait.de/bodycomp.png)
 
 - **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.  
   [Withings ScanWatch Nova](https://www.withings.com/de/de/scanwatch-nova)  
-  ![Withings ScanWatch Nova](https://gesundhait.de/swnova.png)
+  ![Withings ScanWatch Nova](http://gesundhait.de/swnova.png)
 
 In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
 
