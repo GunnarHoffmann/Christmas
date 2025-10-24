@@ -3,6 +3,7 @@ import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 from datetime import datetime
 import pandas as pd
+import yfinance as yf
 
 # --- Seitenlayout ---
 st.set_page_config(
@@ -199,6 +200,110 @@ if st.session_state.music_playing:
         <p style="color: #c41e3a; font-size: 0.9em;">🎵 Weihnachtsmusik spielt...</p>
     </div>
     """, unsafe_allow_html=True)
+
+# --- Stock Price Tracker ---
+st.markdown("---")
+st.markdown("""
+<div class="info-box">
+    <h3 style="margin-top: 0;">📈 Aktien-Kurs Tracker</h3>
+    <p>Gib einen Firmennamen oder ein Aktien-Symbol ein (z.B. MSFT, AAPL, TSLA)</p>
+</div>
+""", unsafe_allow_html=True)
+
+company_input = st.text_input("Firmenname oder Aktien-Symbol", placeholder="z.B. MSFT, AAPL, GOOGL, TSLA")
+
+if company_input:
+    try:
+        # Fetch stock data
+        ticker = yf.Ticker(company_input.upper())
+
+        # Get current data
+        info = ticker.info
+        hist = ticker.history(period="6mo")  # Get 6 months of historical data
+
+        if not hist.empty:
+            current_price = hist['Close'].iloc[-1]
+            prev_close = hist['Close'].iloc[-2] if len(hist) > 1 else current_price
+            price_change = current_price - prev_close
+            price_change_pct = (price_change / prev_close * 100) if prev_close != 0 else 0
+
+            # Display current price
+            change_color = "green" if price_change >= 0 else "red"
+            change_symbol = "📈" if price_change >= 0 else "📉"
+
+            company_name = info.get('longName', company_input.upper())
+
+            st.markdown(f"""
+            <div class="info-box" style="border-left-color: {change_color};">
+                <h2 style="margin-top: 0; text-align: center;">{company_name}</h2>
+                <p style="text-align: center; font-size: 2em; font-weight: 700; color: {change_color};">
+                    ${current_price:.2f}
+                </p>
+                <p style="text-align: center; font-size: 1.2em; color: {change_color};">
+                    {change_symbol} {price_change:+.2f} ({price_change_pct:+.2f}%)
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Create historical price chart
+            fig, ax = plt.subplots(figsize=(10, 5))
+            ax.plot(hist.index, hist['Close'], linewidth=2, color='#667eea', label='Schlusskurs')
+            ax.fill_between(hist.index, hist['Close'], alpha=0.3, color='#667eea')
+
+            ax.set_xlabel('Datum', fontsize=11)
+            ax.set_ylabel('Preis (USD)', fontsize=11)
+            ax.set_title(f'{company_name} - Kursverlauf (6 Monate)', fontsize=13, fontweight='bold')
+            ax.grid(True, alpha=0.3)
+            ax.legend()
+            plt.xticks(rotation=45)
+            plt.tight_layout()
+
+            st.pyplot(fig)
+
+            # Additional stock information
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                st.markdown(f"""
+                <div style="text-align: center; padding: 10px;">
+                    <p style="font-size: 0.9em; color: #667eea;">📊 Höchstkurs (52 Wo.)</p>
+                    <p style="font-size: 1.3em; font-weight: 600;">${info.get('fiftyTwoWeekHigh', 'N/A')}</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+            with col2:
+                st.markdown(f"""
+                <div style="text-align: center; padding: 10px;">
+                    <p style="font-size: 0.9em; color: #667eea;">📉 Tiefstkurs (52 Wo.)</p>
+                    <p style="font-size: 1.3em; font-weight: 600;">${info.get('fiftyTwoWeekLow', 'N/A')}</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+            with col3:
+                market_cap = info.get('marketCap', 0)
+                if market_cap:
+                    market_cap_b = market_cap / 1_000_000_000
+                    st.markdown(f"""
+                    <div style="text-align: center; padding: 10px;">
+                        <p style="font-size: 0.9em; color: #667eea;">💰 Marktkapitalisierung</p>
+                        <p style="font-size: 1.3em; font-weight: 600;">${market_cap_b:.2f}B</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div style="text-align: center; padding: 10px;">
+                        <p style="font-size: 0.9em; color: #667eea;">💰 Marktkapitalisierung</p>
+                        <p style="font-size: 1.3em; font-weight: 600;">N/A</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+        else:
+            st.warning(f"⚠️ Keine Daten für '{company_input}' gefunden. Bitte überprüfe das Symbol.")
+
+    except Exception as e:
+        st.error(f"❌ Fehler beim Abrufen der Aktiendaten: {str(e)}")
+        st.info("💡 Tipp: Versuche es mit einem bekannten Aktien-Symbol wie MSFT, AAPL, GOOGL oder TSLA")
+
+st.markdown("---")
 
 # --- Einführungstext ---
 st.markdown("""
