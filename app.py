@@ -159,25 +159,32 @@ Mit dem folgenden **BMI-Rechner** kannst du deinen persönlichen Wert berechnen 
 Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
 """)
 
-# --- Body Comp ---
-st.markdown("""
-<div class="product-card">
-    <h4>📊 Körperfettwaagen</h4>
-    <p>Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.</p>
-</div>
-""", unsafe_allow_html=True)
-st.markdown("[➜ Withings Body Comp ansehen](https://www.withings.com/de/de/body-comp)")
-st.image("https://www2.withings.com/ui/images/products/body-comp/body-comp-front.png", caption="Withings Body Comp", width=200)
+# --- Produktempfehlungen ---
+col1, col2 = st.columns(2)
 
-# --- ScanWatch Nova ---
-st.markdown("""
-<div class="product-card">
-    <h4>⌚ Sportuhren / Fitness-Tracker</h4>
-    <p>Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.</p>
-</div>
-""", unsafe_allow_html=True)
-st.markdown("[➜ Withings ScanWatch Nova ansehen](https://www.withings.com/de/de/scanwatch-nova)")
-st.image("https://www2.withings.com/ui/images/products/scanwatch-nova/scanwatch-nova-front.png", caption="Withings ScanWatch Nova", width=200)
+with col1:
+    st.markdown("""
+    <div class="product-card">
+        <div style="text-align: center; font-size: 4em; margin-bottom: 0.3em;">📊</div>
+        <h4 style="text-align: center; margin-top: 0;">Körperfettwaagen</h4>
+        <p style="text-align: center;">Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.</p>
+        <div style="text-align: center; margin-top: 1em;">
+            <a href="https://www.withings.com/de/de/body-comp" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.6em 1.5em; border-radius: 8px; text-decoration: none; font-weight: 600;">Mehr erfahren →</a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div class="product-card">
+        <div style="text-align: center; font-size: 4em; margin-bottom: 0.3em;">⌚</div>
+        <h4 style="text-align: center; margin-top: 0;">Fitness-Tracker</h4>
+        <p style="text-align: center;">Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.</p>
+        <div style="text-align: center; margin-top: 1em;">
+            <a href="https://www.withings.com/de/de/scanwatch-nova" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.6em 1.5em; border-radius: 8px; text-decoration: none; font-weight: 600;">Mehr erfahren →</a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.markdown("""
 In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
