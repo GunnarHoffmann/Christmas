@@ -54,7 +54,7 @@ st.markdown(f"""
         font-family: 'Inter', sans-serif !important;
     }}
 
-    h1 {
+    h1 {{
         font-size: 2.5em;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
@@ -62,14 +62,14 @@ st.markdown(f"""
         text-align: center;
         font-weight: 700;
         margin-bottom: 0.5em;
-    }
+    }}
 
-    h2, h3 {
+    h2, h3 {{
         color: #2c3e50;
         font-weight: 600;
-    }
+    }}
 
-    .stButton>button {
+    .stButton>button {{
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border-radius: 12px;
@@ -80,26 +80,26 @@ st.markdown(f"""
         transition: all 0.3s ease;
         width: 100%;
         font-size: 1.1em;
-    }
+    }}
 
-    .stButton>button:hover {
+    .stButton>button:hover {{
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-    }
+    }}
 
     /* Input Felder */
-    .stNumberInput > div > div > input {
+    .stNumberInput > div > div > input {{
         border-radius: 10px;
         border: 2px solid #e0e7ff;
         padding: 0.75em;
         font-size: 1.1em;
         transition: all 0.3s ease;
-    }
+    }}
 
-    .stNumberInput > div > div > input:focus {
+    .stNumberInput > div > div > input:focus {{
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
+    }}
 
     /* Info Boxen */
     .info-box {{
@@ -124,45 +124,45 @@ st.markdown(f"""
         flex-direction: column;
     }}
 
-    .product-card:hover {
+    .product-card:hover {{
         transform: translateY(-5px);
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    }
+    }}
 
     /* Links */
-    a {
+    a {{
         color: #667eea;
         text-decoration: none;
         font-weight: 600;
         transition: color 0.3s ease;
-    }
+    }}
 
-    a:hover {
+    a:hover {{
         color: #764ba2;
-    }
+    }}
 
     /* Divider */
-    hr {
+    hr {{
         border: none;
         height: 2px;
         background: linear-gradient(90deg, transparent, #667eea, transparent);
         margin: 2em 0;
-    }
+    }}
 
     /* Markdown Text */
-    .markdown-text-container {
+    .markdown-text-container {{
         font-size: 1.05em;
         line-height: 1.8;
-    }
+    }}
 
     /* Subheader Styling */
-    [data-testid="stMarkdownContainer"] h3 {
+    [data-testid="stMarkdownContainer"] h3 {{
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 600;
         margin-top: 1em;
-    }
+    }}
     </style>
 """, unsafe_allow_html=True)
 
