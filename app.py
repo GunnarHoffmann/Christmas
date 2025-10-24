@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 # --- Seitenlayout ---
 st.set_page_config(
@@ -140,6 +141,14 @@ st.markdown("""
 
 # --- Titel ---
 st.markdown("<h1>⚖️ BMI Rechner & Gesundheitsguide</h1>", unsafe_allow_html=True)
+
+# --- Datum ---
+aktuelles_datum = datetime.now().strftime("%d.%m.%Y")
+st.markdown(f"""
+<div style="text-align: center; color: #667eea; font-size: 1.1em; margin-bottom: 1.5em; font-weight: 500;">
+    📅 {aktuelles_datum}
+</div>
+""", unsafe_allow_html=True)
 
 # --- Einführungstext ---
 st.markdown("""
