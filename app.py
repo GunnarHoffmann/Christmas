@@ -167,7 +167,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 st.markdown("[➜ Withings Body Comp ansehen](https://www.withings.com/de/de/body-comp)")
-st.image("https://s3.us-west-2.amazonaws.com/gesundhait.de/bodycomp.png", caption="Withings Body Comp", width=200)
+st.image("https://www2.withings.com/ui/images/products/body-comp/body-comp-front.png", caption="Withings Body Comp", width=200)
 
 # --- ScanWatch Nova ---
 st.markdown("""
@@ -177,7 +177,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 st.markdown("[➜ Withings ScanWatch Nova ansehen](https://www.withings.com/de/de/scanwatch-nova)")
-st.image("https://s3.us-west-2.amazonaws.com/gesundhait.de/swnova.png", caption="Withings ScanWatch Nova", width=200)
+st.image("https://www2.withings.com/ui/images/products/scanwatch-nova/scanwatch-nova-front.png", caption="Withings ScanWatch Nova", width=200)
 
 st.markdown("""
 In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
