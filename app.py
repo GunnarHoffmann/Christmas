@@ -317,8 +317,6 @@ with auth_col2:
                     </a>
                 </div>
                 """, unsafe_allow_html=True)
-        else:
-            st.info("ℹ️ Google Sign-In ist nicht konfiguriert. Du kannst die App auch ohne Anmeldung nutzen!")
 
 st.markdown("---")
 
