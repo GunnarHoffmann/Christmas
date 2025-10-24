@@ -21,27 +21,125 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # --- CSS-Stil ---
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
     html, body, .main {
-        background-color: white !important;
-        color: black !important;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%) !important;
+        color: #2c3e50 !important;
+        font-family: 'Inter', sans-serif !important;
     }
+
     h1 {
-        font-size: 1.8em;
-        color: #3e64ff;
+        font-size: 2.5em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         text-align: center;
+        font-weight: 700;
+        margin-bottom: 0.5em;
     }
+
+    h2, h3 {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
     .stButton>button {
-        background-color: #3e64ff;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        border-radius: 8px;
-        padding: 0.5em 1em;
-        font-weight: bold;
+        border-radius: 12px;
+        padding: 0.75em 2em;
+        font-weight: 600;
+        border: none;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        width: 100%;
+        font-size: 1.1em;
     }
+
     .stButton>button:hover {
-        background-color: #1e40ff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    /* Input Felder */
+    .stNumberInput > div > div > input {
+        border-radius: 10px;
+        border: 2px solid #e0e7ff;
+        padding: 0.75em;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+    }
+
+    .stNumberInput > div > div > input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Info Boxen */
+    .info-box {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5em;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        margin: 1em 0;
+        border-left: 4px solid #667eea;
+    }
+
+    /* Produktkarten */
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5em;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        margin: 1em 0;
+        transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Links */
+    a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    a:hover {
+        color: #764ba2;
+    }
+
+    /* Divider */
+    hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #667eea, transparent);
+        margin: 2em 0;
+    }
+
+    /* Markdown Text */
+    .markdown-text-container {
+        font-size: 1.05em;
+        line-height: 1.8;
+    }
+
+    /* Subheader Styling */
+    [data-testid="stMarkdownContainer"] h3 {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+        margin-top: 1em;
     }
     </style>
 """, unsafe_allow_html=True)
+
+# --- Titel ---
+st.markdown("<h1>⚖️ BMI Rechner & Gesundheitsguide</h1>", unsafe_allow_html=True)
 
 # --- Einführungstext ---
 st.markdown("""
@@ -62,14 +160,24 @@ Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. W
 """)
 
 # --- Body Comp ---
-st.markdown("- **Körperfettwaagen**: Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.")
-st.markdown("[Withings Body Comp ansehen](https://www.withings.com/de/de/body-comp)")
-st.image("https://s3.us-west-2.amazonaws.com/gesundhait.de/bodycomp.png", caption="Withings Body Comp", width=150)
+st.markdown("""
+<div class="product-card">
+    <h4>📊 Körperfettwaagen</h4>
+    <p>Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.</p>
+</div>
+""", unsafe_allow_html=True)
+st.markdown("[➜ Withings Body Comp ansehen](https://www.withings.com/de/de/body-comp)")
+st.image("https://s3.us-west-2.amazonaws.com/gesundhait.de/bodycomp.png", caption="Withings Body Comp", width=200)
 
 # --- ScanWatch Nova ---
-st.markdown("- **Sportuhren / Fitness-Tracker**: Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.")
-st.markdown("[Withings ScanWatch Nova ansehen](https://www.withings.com/de/de/scanwatch-nova)")
-st.image("https://s3.us-west-2.amazonaws.com/gesundhait.de/swnova.png", caption="Withings ScanWatch Nova", width=150)
+st.markdown("""
+<div class="product-card">
+    <h4>⌚ Sportuhren / Fitness-Tracker</h4>
+    <p>Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.</p>
+</div>
+""", unsafe_allow_html=True)
+st.markdown("[➜ Withings ScanWatch Nova ansehen](https://www.withings.com/de/de/scanwatch-nova)")
+st.image("https://s3.us-west-2.amazonaws.com/gesundhait.de/swnova.png", caption="Withings ScanWatch Nova", width=200)
 
 st.markdown("""
 In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
@@ -77,7 +185,12 @@ In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Ver
 st.markdown("---")
 
 # --- Eingaben ---
-st.subheader("Gib deine Daten ein")
+st.markdown("""
+<div class="info-box">
+    <h3 style="margin-top: 0;">🧮 Berechne deinen BMI</h3>
+    <p>Gib deine Daten ein, um deinen persönlichen Body-Mass-Index zu berechnen.</p>
+</div>
+""", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:
@@ -86,25 +199,33 @@ with col2:
     groesse = st.number_input("Größe (in cm)", min_value=100.0, max_value=250.0, value=175.0)
 
 # --- Button ---
-if st.button("BMI berechnen"):
+if st.button("✨ BMI berechnen"):
     bmi = gewicht / ((groesse / 100) ** 2)
-    st.subheader(f"Dein BMI beträgt: **{bmi:.1f}**")
 
     # Bewertung
     if bmi < 18.5:
         kategorie = "Untergewicht"
         farbe = "yellow"
+        kategorie_emoji = "⚠️"
     elif bmi < 25:
         kategorie = "Normalgewicht"
         farbe = "green"
+        kategorie_emoji = "✅"
     elif bmi < 30:
         kategorie = "Übergewicht"
         farbe = "orange"
+        kategorie_emoji = "⚠️"
     else:
         kategorie = "Adipositas"
         farbe = "red"
+        kategorie_emoji = "🔴"
 
-    st.markdown(f"**Kategorie:** _{kategorie}_")
+    st.markdown(f"""
+    <div class="info-box" style="border-left-color: {farbe};">
+        <h2 style="margin-top: 0; text-align: center;">Dein BMI: <strong>{bmi:.1f}</strong></h2>
+        <p style="text-align: center; font-size: 1.2em;">{kategorie_emoji} <strong>Kategorie:</strong> {kategorie}</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     # --- Grafik ---
     fig, ax = plt.subplots(figsize=(8, 1.5))
