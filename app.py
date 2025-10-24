@@ -2,14 +2,23 @@ import streamlit as st
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 from datetime import datetime
+import pandas as pd
 
 # --- Seitenlayout ---
 st.set_page_config(
-    page_title="BMI Rechner",
-    page_icon="⚖️",
+    page_title="Gesundheits & Wellness Center",
+    page_icon="🎄",
     layout="centered",
-    
+
 )
+
+# --- Session State Initialisierung ---
+if 'bmi_history' not in st.session_state:
+    st.session_state.bmi_history = []
+if 'dark_mode' not in st.session_state:
+    st.session_state.dark_mode = False
+if 'music_playing' not in st.session_state:
+    st.session_state.music_playing = False
 
 hide_streamlit_style = """
     <style>
@@ -20,16 +29,30 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+# --- Dark Mode Toggle ---
+dark_mode = st.session_state.dark_mode
+
 # --- CSS-Stil ---
-st.markdown("""
+if dark_mode:
+    bg_gradient = "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)"
+    text_color = "#eaeaea"
+    card_bg = "#0f3460"
+    border_color = "#e94560"
+else:
+    bg_gradient = "linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%)"
+    text_color = "#2c3e50"
+    card_bg = "white"
+    border_color = "#667eea"
+
+st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
-    html, body, .main {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%) !important;
-        color: #2c3e50 !important;
+    html, body, .main {{
+        background: {bg_gradient} !important;
+        color: {text_color} !important;
         font-family: 'Inter', sans-serif !important;
-    }
+    }}
 
     h1 {
         font-size: 2.5em;
@@ -79,18 +102,18 @@ st.markdown("""
     }
 
     /* Info Boxen */
-    .info-box {
-        background: white;
+    .info-box {{
+        background: {card_bg};
         border-radius: 15px;
         padding: 1.5em;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         margin: 1em 0;
-        border-left: 4px solid #667eea;
-    }
+        border-left: 4px solid {border_color};
+    }}
 
     /* Produktkarten */
-    .product-card {
-        background: white;
+    .product-card {{
+        background: {card_bg};
         border-radius: 15px;
         padding: 1.5em;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -99,7 +122,7 @@ st.markdown("""
         min-height: 280px;
         display: flex;
         flex-direction: column;
-    }
+    }}
 
     .product-card:hover {
         transform: translateY(-5px);
@@ -144,15 +167,38 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Titel ---
-st.markdown("<h1>⚖️ BMI Rechner & Gesundheitsguide</h1>", unsafe_allow_html=True)
+st.markdown("<h1>🎄 Gesundheits & Wellness Center</h1>", unsafe_allow_html=True)
 
-# --- Datum ---
-aktuelles_datum = datetime.now().strftime("%d.%m.%Y")
-st.markdown(f"""
-<div style="text-align: center; color: #667eea; font-size: 1.1em; margin-bottom: 1.5em; font-weight: 500;">
-    🗓️ {aktuelles_datum}
-</div>
-""", unsafe_allow_html=True)
+# --- Dark Mode & Music Controls ---
+col_left, col_center, col_right = st.columns([2, 3, 2])
+
+with col_left:
+    if st.button("🌙" if not dark_mode else "☀️", key="dark_mode_toggle"):
+        st.session_state.dark_mode = not st.session_state.dark_mode
+        st.rerun()
+
+with col_center:
+    aktuelles_datum = datetime.now().strftime("%d.%m.%Y")
+    st.markdown(f"""
+    <div style="text-align: center; color: #667eea; font-size: 1.1em; font-weight: 500;">
+        🗓️ {aktuelles_datum}
+    </div>
+    """, unsafe_allow_html=True)
+
+with col_right:
+    if st.button("🎵 Weihnachtsmusik", key="music_toggle"):
+        st.session_state.music_playing = not st.session_state.music_playing
+
+# --- Weihnachtsmusik Player ---
+if st.session_state.music_playing:
+    st.markdown("""
+    <div style="text-align: center; margin: 1em 0;">
+        <audio autoplay loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+        <p style="color: #c41e3a; font-size: 0.9em;">🎵 Weihnachtsmusik spielt...</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # --- Einführungstext ---
 st.markdown("""
@@ -247,6 +293,14 @@ if st.button("✨ BMI berechnen"):
     </div>
     """, unsafe_allow_html=True)
 
+    # BMI Verlauf speichern
+    st.session_state.bmi_history.append({
+        'datum': datetime.now(),
+        'bmi': bmi,
+        'gewicht': gewicht,
+        'groesse': groesse
+    })
+
     # --- Grafik ---
     fig, ax = plt.subplots(figsize=(8, 1.5))
 
@@ -271,6 +325,137 @@ if st.button("✨ BMI berechnen"):
     ax.set_title("Einordnung deines BMI", fontsize=12)
 
     st.pyplot(fig)
+
+# --- BMI Verlauf anzeigen ---
+if len(st.session_state.bmi_history) > 0:
+    st.markdown("---")
+    st.markdown("### 📈 Dein BMI-Verlauf")
+
+    df = pd.DataFrame(st.session_state.bmi_history)
+
+    if len(df) > 1:
+        fig2, ax2 = plt.subplots(figsize=(10, 4))
+        ax2.plot(df['datum'], df['bmi'], marker='o', linewidth=2, markersize=8, color='#667eea')
+        ax2.axhline(y=18.5, color='yellow', linestyle='--', alpha=0.5, label='Untergewicht')
+        ax2.axhline(y=25, color='green', linestyle='--', alpha=0.5, label='Normalgewicht')
+        ax2.axhline(y=30, color='orange', linestyle='--', alpha=0.5, label='Übergewicht')
+        ax2.set_ylabel('BMI', fontsize=11)
+        ax2.set_xlabel('Datum', fontsize=11)
+        ax2.set_title('BMI-Entwicklung über Zeit', fontsize=13, fontweight='bold')
+        ax2.legend()
+        ax2.grid(True, alpha=0.3)
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        st.pyplot(fig2)
+    else:
+        st.info("📊 Berechne deinen BMI mehrmals, um den Verlauf zu sehen!")
+
+    # Reset-Button für Verlauf
+    if st.button("🗑️ Verlauf löschen"):
+        st.session_state.bmi_history = []
+        st.rerun()
+
+# --- Kalorienbedarf-Rechner ---
+st.markdown("---")
+st.markdown("""
+<div class="info-box">
+    <h3 style="margin-top: 0;">🔥 Kalorienbedarf berechnen</h3>
+    <p>Berechne deinen täglichen Kalorienbedarf basierend auf der Harris-Benedict-Formel.</p>
+</div>
+""", unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    alter = st.number_input("Alter (Jahre)", min_value=10, max_value=120, value=30)
+with col2:
+    geschlecht = st.selectbox("Geschlecht", ["Männlich", "Weiblich"])
+with col3:
+    aktivitaet = st.selectbox("Aktivitätslevel",
+                              ["Sitzend", "Leicht aktiv", "Mäßig aktiv", "Sehr aktiv", "Extrem aktiv"])
+
+if st.button("🔥 Kalorienbedarf berechnen"):
+    # Harris-Benedict-Formel
+    if geschlecht == "Männlich":
+        grundumsatz = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
+    else:
+        grundumsatz = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
+
+    # PAL-Faktoren
+    pal_faktoren = {
+        "Sitzend": 1.2,
+        "Leicht aktiv": 1.375,
+        "Mäßig aktiv": 1.55,
+        "Sehr aktiv": 1.725,
+        "Extrem aktiv": 1.9
+    }
+
+    gesamtumsatz = grundumsatz * pal_faktoren[aktivitaet]
+
+    st.markdown(f"""
+    <div class="info-box">
+        <h3 style="text-align: center;">Dein Kalorienbedarf</h3>
+        <p style="text-align: center; font-size: 1.1em;">
+            💪 <strong>Grundumsatz:</strong> {grundumsatz:.0f} kcal/Tag<br>
+            🔥 <strong>Gesamtumsatz:</strong> {gesamtumsatz:.0f} kcal/Tag
+        </p>
+        <hr>
+        <p style="font-size: 0.95em;">
+            📉 <strong>Abnehmen:</strong> {gesamtumsatz - 500:.0f} kcal/Tag (-500 kcal)<br>
+            ⚖️ <strong>Gewicht halten:</strong> {gesamtumsatz:.0f} kcal/Tag<br>
+            📈 <strong>Zunehmen:</strong> {gesamtumsatz + 500:.0f} kcal/Tag (+500 kcal)
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- Wasserbedarf-Rechner ---
+st.markdown("---")
+st.markdown("""
+<div class="info-box">
+    <h3 style="margin-top: 0;">💧 Täglicher Wasserbedarf</h3>
+    <p>Berechne, wie viel Wasser du täglich trinken solltest.</p>
+</div>
+""", unsafe_allow_html=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    sport_minuten = st.number_input("Sport pro Tag (Minuten)", min_value=0, max_value=300, value=30)
+with col2:
+    temperatur = st.selectbox("Außentemperatur", ["< 20°C", "20-25°C", "> 25°C"])
+
+if st.button("💧 Wasserbedarf berechnen"):
+    # Grundformel: 35ml pro kg Körpergewicht
+    basis_wasserbedarf = gewicht * 0.035
+
+    # Zusätzlicher Bedarf durch Sport (0.5L pro 30min)
+    sport_zusatz = (sport_minuten / 30) * 0.5
+
+    # Temperatur-Zuschlag
+    temp_faktoren = {
+        "< 20°C": 0,
+        "20-25°C": 0.3,
+        "> 25°C": 0.6
+    }
+    temp_zusatz = temp_faktoren[temperatur]
+
+    gesamt_wasser = basis_wasserbedarf + sport_zusatz + temp_zusatz
+
+    st.markdown(f"""
+    <div class="info-box">
+        <h3 style="text-align: center;">💧 Dein Wasserbedarf</h3>
+        <p style="text-align: center; font-size: 1.3em;">
+            <strong>{gesamt_wasser:.1f} Liter</strong> pro Tag
+        </p>
+        <p style="text-align: center; font-size: 0.95em;">
+            Das entspricht etwa <strong>{int(gesamt_wasser * 4)} Gläser</strong> (à 250ml)
+        </p>
+        <hr>
+        <p style="font-size: 0.9em;">
+            💡 <strong>Tipp:</strong> Trinke regelmäßig über den Tag verteilt.<br>
+            🏃 Bei Sport: Zusätzlich ca. {sport_zusatz:.1f}L<br>
+            🌡️ Bei Hitze: Zusätzlich ca. {temp_zusatz:.1f}L
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # --- Christmas Tetris Game ---
 st.markdown("---")
