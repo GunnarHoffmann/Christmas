@@ -5,3 +5,8 @@ scikit-learn
 gtts
 matplotlib
 yfinance
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+python-dotenv
+requests

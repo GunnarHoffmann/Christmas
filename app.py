@@ -4,6 +4,16 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import pandas as pd
 import yfinance as yf
+import os
+from dotenv import load_dotenv
+from google_auth_oauthlib.flow import Flow
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
+import json
+import base64
+
+# Load environment variables
+load_dotenv()
 
 # --- Seitenlayout ---
 st.set_page_config(
@@ -13,6 +23,88 @@ st.set_page_config(
 
 )
 
+# --- Google OAuth Configuration ---
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+
+def get_google_auth_url():
+    """Generate Google OAuth URL for sign-in"""
+    if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
+        return None
+
+    # Get the current URL to use as redirect URI
+    try:
+        # For local development, use localhost
+        redirect_uri = "http://localhost:8501"
+
+        client_config = {
+            "web": {
+                "client_id": GOOGLE_CLIENT_ID,
+                "client_secret": GOOGLE_CLIENT_SECRET,
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "redirect_uris": [redirect_uri],
+            }
+        }
+
+        flow = Flow.from_client_config(
+            client_config,
+            scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+            redirect_uri=redirect_uri
+        )
+
+        auth_url, state = flow.authorization_url(prompt='consent')
+
+        # Store state in session for verification
+        st.session_state.oauth_state = state
+
+        return auth_url
+    except Exception as e:
+        st.error(f"Error generating auth URL: {str(e)}")
+        return None
+
+def handle_oauth_callback(authorization_code):
+    """Handle OAuth callback and get user info"""
+    try:
+        redirect_uri = "http://localhost:8501"
+
+        client_config = {
+            "web": {
+                "client_id": GOOGLE_CLIENT_ID,
+                "client_secret": GOOGLE_CLIENT_SECRET,
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "redirect_uris": [redirect_uri],
+            }
+        }
+
+        flow = Flow.from_client_config(
+            client_config,
+            scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+            redirect_uri=redirect_uri
+        )
+
+        # Exchange authorization code for tokens
+        flow.fetch_token(code=authorization_code)
+        credentials = flow.credentials
+
+        # Get user info
+        import requests
+        userinfo_response = requests.get(
+            'https://www.googleapis.com/oauth2/v1/userinfo',
+            headers={'Authorization': f'Bearer {credentials.token}'}
+        )
+
+        if userinfo_response.status_code == 200:
+            user_info = userinfo_response.json()
+            return user_info
+        else:
+            return None
+
+    except Exception as e:
+        st.error(f"Error handling OAuth callback: {str(e)}")
+        return None
+
 # --- Session State Initialisierung ---
 if 'bmi_history' not in st.session_state:
     st.session_state.bmi_history = []
@@ -20,6 +112,21 @@ if 'dark_mode' not in st.session_state:
     st.session_state.dark_mode = False
 if 'music_playing' not in st.session_state:
     st.session_state.music_playing = False
+if 'user_info' not in st.session_state:
+    st.session_state.user_info = None
+if 'oauth_state' not in st.session_state:
+    st.session_state.oauth_state = None
+
+# --- Handle OAuth Callback ---
+query_params = st.query_params
+if 'code' in query_params and st.session_state.user_info is None:
+    auth_code = query_params['code']
+    user_info = handle_oauth_callback(auth_code)
+    if user_info:
+        st.session_state.user_info = user_info
+        # Clear query params after successful authentication
+        st.query_params.clear()
+        st.rerun()
 
 hide_streamlit_style = """
     <style>
@@ -169,6 +276,51 @@ st.markdown(f"""
 
 # --- Titel ---
 st.markdown("<h1>🎄 Gesundheits & Wellness Center</h1>", unsafe_allow_html=True)
+
+# --- User Authentication Section ---
+if st.session_state.user_info:
+    # User is signed in - show welcome message
+    user_name = st.session_state.user_info.get('name', st.session_state.user_info.get('email', 'User'))
+    st.markdown(f"""
+    <div style="text-align: center; margin: 1em 0; padding: 1em; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white;">
+        <h3 style="margin: 0; color: white;">Willkommen, {user_name}! 👋</h3>
+        <p style="margin: 0.5em 0 0 0; color: rgba(255,255,255,0.9); font-size: 0.95em;">Schön, dass du da bist!</p>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    # User is not signed in - show optional sign-in
+    if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
+        st.markdown("""
+        <div style="text-align: center; margin: 1em 0; padding: 1em; background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); border-radius: 15px; border: 2px solid #667eea;">
+            <p style="margin: 0; color: #667eea; font-weight: 600;">Melde dich optional mit deinem Google-Konto an für eine personalisierte Begrüßung</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# --- Sign In / Sign Out Controls ---
+auth_col1, auth_col2, auth_col3 = st.columns([1, 2, 1])
+with auth_col2:
+    if st.session_state.user_info:
+        # Show sign-out button
+        if st.button("🚪 Abmelden", key="sign_out", use_container_width=True):
+            st.session_state.user_info = None
+            st.session_state.oauth_state = None
+            st.rerun()
+    else:
+        # Show sign-in button (optional)
+        if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
+            auth_url = get_google_auth_url()
+            if auth_url:
+                st.markdown(f"""
+                <div style="text-align: center;">
+                    <a href="{auth_url}" target="_self" style="display: inline-block; background: linear-gradient(135deg, #4285F4 0%, #34A853 50%, #FBBC05 75%, #EA4335 100%); color: white; padding: 0.75em 2em; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4); transition: all 0.3s ease;">
+                        🔐 Mit Google anmelden (optional)
+                    </a>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("ℹ️ Google Sign-In ist nicht konfiguriert. Du kannst die App auch ohne Anmeldung nutzen!")
+
+st.markdown("---")
 
 # --- Dark Mode & Music Controls ---
 col_left, col_center, col_right = st.columns([2, 3, 2])
