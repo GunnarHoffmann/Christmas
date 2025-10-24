@@ -95,6 +95,9 @@ st.markdown("""
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         margin: 1em 0;
         transition: all 0.3s ease;
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
     }
 
     .product-card:hover {
