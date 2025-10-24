@@ -272,12 +272,12 @@ if st.button("✨ BMI berechnen"):
 
     st.pyplot(fig)
 
-# --- Tetris Game ---
+# --- Christmas Tetris Game ---
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; margin-top: 2em;">
-    <h2>🎮 Tetris Game</h2>
-    <p style="color: #667eea; font-size: 1.1em;">Entspanne dich mit einer Runde Tetris!</p>
+    <h2>🎅 Christmas Tetris - Santa's Sleigh Challenge! 🎄</h2>
+    <p style="color: #c41e3a; font-size: 1.1em;">Hilf dem Weihnachtsmann, die Geschenke im Schlitten zu stapeln!</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -293,37 +293,80 @@ tetris_html = """
             box-sizing: border-box;
         }
 
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10px) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(50px);
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes sleighMove {
+            0%, 100% {
+                transform: translateX(-10px);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            background: linear-gradient(180deg, #0a1e3d 0%, #1a365d 50%, #2d5a87 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            animation: snowfall linear infinite;
+            pointer-events: none;
+            z-index: 1;
         }
 
         .game-container {
-            background: white;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 40px rgba(255, 255, 255, 0.2), 0 0 60px rgba(196, 30, 58, 0.3);
             max-width: 500px;
             width: 100%;
+            position: relative;
+            z-index: 10;
+            border: 3px solid #c41e3a;
         }
 
         .game-header {
             text-align: center;
             margin-bottom: 20px;
+            position: relative;
         }
 
         .game-header h1 {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #c41e3a 0%, #165b33 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: 700;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .santa-sleigh {
+            font-size: 3em;
+            animation: sleighMove 3s ease-in-out infinite;
+            display: inline-block;
         }
 
         .score-board {
@@ -331,9 +374,10 @@ tetris_html = """
             justify-content: space-around;
             margin-bottom: 20px;
             padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #c41e3a 0%, #165b33 50%, #ffd700 100%);
             border-radius: 12px;
             color: white;
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.4);
         }
 
         .score-item {
@@ -344,23 +388,27 @@ tetris_html = """
             font-size: 0.9em;
             opacity: 0.9;
             margin-bottom: 5px;
+            font-weight: 600;
         }
 
         .score-value {
             font-size: 1.8em;
             font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .canvas-wrapper {
             display: flex;
             justify-content: center;
             margin: 20px 0;
+            position: relative;
         }
 
         canvas {
-            border: 3px solid #667eea;
+            border: 4px solid #c41e3a;
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 20px rgba(196, 30, 58, 0.5), inset 0 0 20px rgba(22, 91, 51, 0.1);
+            background: linear-gradient(180deg, #e6f3ff 0%, #ffffff 100%);
         }
 
         .controls {
@@ -369,7 +417,7 @@ tetris_html = """
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #c41e3a 0%, #165b33 100%);
             color: white;
             border: none;
             padding: 12px 30px;
@@ -377,26 +425,28 @@ tetris_html = """
             font-size: 1.1em;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.4);
             transition: all 0.3s ease;
             margin: 5px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.6);
+            background: linear-gradient(135deg, #d32f2f 0%, #1b7943 100%);
         }
 
         .instructions {
             margin-top: 20px;
             padding: 15px;
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #fff5f5 0%, #f0fff4 100%);
             border-radius: 10px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #c41e3a;
+            border-right: 4px solid #165b33;
         }
 
         .instructions h3 {
-            color: #2c3e50;
+            color: #c41e3a;
             margin-bottom: 10px;
             font-size: 1.1em;
         }
@@ -408,7 +458,8 @@ tetris_html = """
 
         .instructions li {
             padding: 5px 0;
-            color: #555;
+            color: #2d5a87;
+            font-weight: 500;
         }
 
         .game-over {
@@ -417,12 +468,13 @@ tetris_html = """
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
+            background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
             text-align: center;
             z-index: 1000;
+            border: 3px solid #c41e3a;
         }
 
         .game-over.show {
@@ -436,32 +488,68 @@ tetris_html = """
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(10, 30, 61, 0.7);
             z-index: 999;
         }
 
         .overlay.show {
             display: block;
         }
+
+        .christmas-lights {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .light {
+            width: 15px;
+            height: 20px;
+            border-radius: 50% 50% 40% 40%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .light:nth-child(1) { background: #c41e3a; animation-delay: 0s; }
+        .light:nth-child(2) { background: #165b33; animation-delay: 0.2s; }
+        .light:nth-child(3) { background: #ffd700; animation-delay: 0.4s; }
+        .light:nth-child(4) { background: #4169e1; animation-delay: 0.6s; }
+        .light:nth-child(5) { background: #c41e3a; animation-delay: 0.8s; }
+        .light:nth-child(6) { background: #165b33; animation-delay: 1s; }
     </style>
 </head>
 <body>
     <div class="game-container">
+        <div class="christmas-lights">
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+        </div>
+
         <div class="game-header">
-            <h1>🎮 Tetris</h1>
+            <div class="santa-sleigh">🎅🛷</div>
+            <h1>🎄 Christmas Tetris 🎁</h1>
+            <p style="color: #c41e3a; font-size: 0.9em; margin-top: 5px;">Stapel die Weihnachtsgeschenke!</p>
         </div>
 
         <div class="score-board">
             <div class="score-item">
-                <div class="score-label">Score</div>
+                <div class="score-label">🎁 Punkte</div>
                 <div class="score-value" id="score">0</div>
             </div>
             <div class="score-item">
-                <div class="score-label">Level</div>
+                <div class="score-label">⭐ Level</div>
                 <div class="score-value" id="level">1</div>
             </div>
             <div class="score-item">
-                <div class="score-label">Lines</div>
+                <div class="score-label">🎄 Zeilen</div>
                 <div class="score-value" id="lines">0</div>
             </div>
         </div>
@@ -471,27 +559,28 @@ tetris_html = """
         </div>
 
         <div class="controls">
-            <button class="btn" onclick="startGame()">▶ Spiel starten</button>
+            <button class="btn" onclick="startGame()">🎅 Spiel starten</button>
             <button class="btn" onclick="pauseGame()">⏸ Pause</button>
         </div>
 
         <div class="instructions">
-            <h3>📖 Steuerung</h3>
+            <h3>🎁 Steuerung</h3>
             <ul>
-                <li>⬅️ ➡️ Pfeil links/rechts: Bewegen</li>
-                <li>⬆️ Pfeil hoch: Drehen</li>
+                <li>⬅️ ➡️ Pfeiltasten: Geschenke bewegen</li>
+                <li>⬆️ Pfeil hoch: Geschenke drehen</li>
                 <li>⬇️ Pfeil runter: Schneller fallen</li>
-                <li>Leertaste: Sofort fallen lassen</li>
+                <li>🎄 Leertaste: Sofort im Schlitten verstauen</li>
             </ul>
         </div>
     </div>
 
     <div class="overlay" id="overlay"></div>
     <div class="game-over" id="gameOver">
-        <h2 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5em; margin-bottom: 20px;">Game Over!</h2>
-        <p style="font-size: 1.5em; margin-bottom: 10px;">Dein Score: <span id="finalScore">0</span></p>
-        <p style="font-size: 1.2em; margin-bottom: 30px; color: #666;">Level: <span id="finalLevel">1</span> | Zeilen: <span id="finalLines">0</span></p>
-        <button class="btn" onclick="restartGame()">🔄 Neues Spiel</button>
+        <h2 style="background: linear-gradient(135deg, #c41e3a 0%, #165b33 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5em; margin-bottom: 20px;">🎅 Ho Ho Ho! 🎄</h2>
+        <p style="font-size: 1.3em; margin-bottom: 10px; color: #c41e3a;">Der Schlitten ist voll!</p>
+        <p style="font-size: 1.5em; margin-bottom: 10px;">🎁 Punkte: <span id="finalScore">0</span></p>
+        <p style="font-size: 1.2em; margin-bottom: 30px; color: #165b33;">⭐ Level: <span id="finalLevel">1</span> | 🎄 Zeilen: <span id="finalLines">0</span></p>
+        <button class="btn" onclick="restartGame()">🔄 Neue Runde starten</button>
     </div>
 
     <script>
@@ -523,19 +612,31 @@ tetris_html = """
         ];
 
         const COLORS = [
-            '#667eea', // I
-            '#764ba2', // O
-            '#f093fb', // T
-            '#4facfe', // L
-            '#43e97b', // J
-            '#fa709a', // S
-            '#feca57'  // Z
+            '#c41e3a', // I - Christmas Red
+            '#165b33', // O - Christmas Green
+            '#ffd700', // T - Gold
+            '#ffffff', // L - White (Snow)
+            '#c0c0c0', // J - Silver
+            '#ff6b6b', // S - Light Red
+            '#4ecdc4'  // Z - Ice Blue
         ];
 
         function drawBlock(x, y, color) {
             ctx.fillStyle = color;
             ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-            ctx.strokeStyle = '#fff';
+
+            // Add a slight gradient for 3D effect
+            const gradient = ctx.createLinearGradient(
+                x * BLOCK_SIZE, y * BLOCK_SIZE,
+                (x + 1) * BLOCK_SIZE, (y + 1) * BLOCK_SIZE
+            );
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+            // Draw border
+            ctx.strokeStyle = color === '#ffffff' ? '#c0c0c0' : '#fff';
             ctx.lineWidth = 2;
             ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
         }
@@ -754,6 +855,25 @@ tetris_html = """
 
         // Initial draw
         drawBoard();
+
+        // Create snowflakes
+        function createSnowflakes() {
+            const snowflakeChars = ['❄', '❅', '❆'];
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 1 + 0.5) + 'em';
+                snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+                document.body.appendChild(snowflake);
+            }
+        }
+
+        // Initialize snowflakes
+        createSnowflakes();
     </script>
 </body>
 </html>
