@@ -146,7 +146,7 @@ st.markdown("<h1>⚖️ BMI Rechner & Gesundheitsguide</h1>", unsafe_allow_html=
 aktuelles_datum = datetime.now().strftime("%d.%m.%Y")
 st.markdown(f"""
 <div style="text-align: center; color: #667eea; font-size: 1.1em; margin-bottom: 1.5em; font-weight: 500;">
-    📅 {aktuelles_datum}
+    🗓️ {aktuelles_datum}
 </div>
 """, unsafe_allow_html=True)
 
