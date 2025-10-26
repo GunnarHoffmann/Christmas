@@ -1320,3 +1320,38 @@ tetris_html = """
 """
 
 components.html(tetris_html, height=900, scrolling=False)
+
+# --- PayPal Donation Section ---
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; margin-top: 2em; margin-bottom: 2em;">
+    <h2 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;">💝 Unterstütze dieses Projekt</h2>
+    <p style="color: #667eea; font-size: 1.1em; margin: 1em 0;">Gefällt dir diese App? Unterstütze die Entwicklung mit einer kleinen Spende!</p>
+</div>
+""", unsafe_allow_html=True)
+
+# PayPal Donation Button
+paypal_email = "gunnar_hoffmann@hotmail.com"
+donation_amount = "1.00"
+currency_code = "EUR"
+
+# Create PayPal donation link
+paypal_link = f"https://www.paypal.com/paypalme/gunnarhoffmann/1"
+
+st.markdown(f"""
+<div style="text-align: center; margin: 2em 0;">
+    <div class="info-box" style="max-width: 500px; margin: 0 auto; background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); border: 3px solid #667eea; box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);">
+        <div style="font-size: 4em; margin-bottom: 0.3em;">☕</div>
+        <h3 style="margin-top: 0; color: #667eea;">Spendiere mir einen Kaffee</h3>
+        <p style="font-size: 1.1em; color: #2c3e50; margin: 1em 0;">
+            Mit nur <strong style="color: #667eea; font-size: 1.2em;">1 Euro</strong> hilfst du mir, diese App weiterzuentwickeln und neue Features hinzuzufügen!
+        </p>
+        <a href="{paypal_link}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%); color: white; padding: 1em 3em; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1.2em; box-shadow: 0 4px 15px rgba(0, 112, 186, 0.4); transition: all 0.3s ease; margin-top: 1em;">
+            <span style="margin-right: 0.5em;">💳</span>1€ via PayPal spenden
+        </a>
+        <p style="font-size: 0.9em; color: #667eea; margin-top: 1.5em; font-style: italic;">
+            Vielen Dank für deine Unterstützung! 🙏
+        </p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
