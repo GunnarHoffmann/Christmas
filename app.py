@@ -26,6 +26,7 @@ st.set_page_config(
 # --- Google OAuth Configuration ---
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+REDIRECT_URI = os.getenv('REDIRECT_URI', 'http://localhost:8501')  # Default to localhost for local development
 
 def get_google_auth_url():
     """Generate Google OAuth URL for sign-in"""
@@ -34,8 +35,8 @@ def get_google_auth_url():
 
     # Get the current URL to use as redirect URI
     try:
-        # For local development, use localhost
-        redirect_uri = "http://localhost:8501"
+        # Use REDIRECT_URI from environment variable
+        redirect_uri = REDIRECT_URI
 
         client_config = {
             "web": {
@@ -66,7 +67,7 @@ def get_google_auth_url():
 def handle_oauth_callback(authorization_code):
     """Handle OAuth callback and get user info"""
     try:
-        redirect_uri = "http://localhost:8501"
+        redirect_uri = REDIRECT_URI
 
         client_config = {
             "web": {
