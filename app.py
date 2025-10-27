@@ -1334,7 +1334,7 @@ st.markdown("""
             Wenn dir diese App weitergeholfen hat und du meine Arbeit unterstützen möchtest, freue ich mich über eine kleine Spende!
         </p>
         <div style="text-align: center;">
-            <a href="https://paypal.me/GunnarHoffmann2" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%); color: white; padding: 1em 2.5em; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1.15em; box-shadow: 0 4px 15px rgba(0, 112, 186, 0.4); transition: all 0.3s ease;">
+            <a href="https://paypal.me/GunnarHoffmann2/1" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%); color: white; padding: 1em 2.5em; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1.15em; box-shadow: 0 4px 15px rgba(0, 112, 186, 0.4); transition: all 0.3s ease;">
                 <span style="font-size: 1.3em; margin-right: 0.3em;">💙</span> Spende via PayPal
             </a>
         </div>
