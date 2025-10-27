@@ -311,13 +311,7 @@ with auth_col2:
         if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
             auth_url = get_google_auth_url()
             if auth_url:
-                st.markdown(f"""
-                <div style="text-align: center;">
-                    <button onclick="window.location.href='{auth_url}'" style="display: inline-block; background: linear-gradient(135deg, #4285F4 0%, #34A853 50%, #FBBC05 75%, #EA4335 100%); color: white; padding: 0.75em 2em; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4); transition: all 0.3s ease; border: none; cursor: pointer; font-size: 1em;">
-                        🔐 Mit Google anmelden (optional)
-                    </button>
-                </div>
-                """, unsafe_allow_html=True)
+                st.link_button("🔐 Mit Google anmelden (optional)", auth_url, use_container_width=True)
 
 st.markdown("---")
 
