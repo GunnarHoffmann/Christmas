@@ -28,17 +28,20 @@ st.set_page_config(
 # --- Google OAuth Configuration ---
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
-REDIRECT_URI = os.getenv('REDIRECT_URI', 'http://localhost:8501')  # Default to localhost for local development
+REDIRECT_URI = os.getenv('REDIRECT_URI')  # Will be set in Streamlit Cloud settings
 
 def get_google_auth_url():
     """Generate Google OAuth URL for sign-in"""
     if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
         return None
 
-    # Get the current URL to use as redirect URI
     try:
-        # Use REDIRECT_URI from environment variable
-        redirect_uri = REDIRECT_URI
+        # For local development use localhost, for production use the configured REDIRECT_URI
+        redirect_uri = REDIRECT_URI or 'http://localhost:8501'
+        
+        # Ensure we have a valid redirect URI for the environment
+        if st.runtime.exists() and not REDIRECT_URI:
+            st.error("Please set REDIRECT_URI in your Streamlit secrets/environment variables")
 
         client_config = {
             "web": {
