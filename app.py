@@ -328,16 +328,16 @@ with auth_col2:
         if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
             auth_url = get_google_auth_url()
             if auth_url:
-                # Use a form-based submit for reliable navigation that works in Streamlit's iframe
-                st.markdown(f"""
-                <div style="text-align: center; margin: 0.5em 0;">
-                    <form action="{auth_url}" method="get" style="display: inline-block; width: 100%; max-width: 360px;">
-                        <button type="submit" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.75em 1.2em; border-radius: 12px; font-weight: 600; border: none; cursor: pointer;">
-                            🔐 Mit Google anmelden (optional)
-                        </button>
-                    </form>
-                </div>
-                """, unsafe_allow_html=True)
+                # Use link_button with _self target to force same-window navigation
+                st.markdown(
+                    f'<div class="stButton"><a href="{auth_url}" target="_self" '
+                    f'style="text-decoration: none; display: block;">'
+                    f'<button style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); '
+                    f'color: white; padding: 0.75em 1.2em; border-radius: 12px; font-weight: 600; border: none; '
+                    f'cursor: pointer; font-family: \'Source Sans Pro\', sans-serif;">🔐 Mit Google anmelden (optional)</button>'
+                    f'</a></div>',
+                    unsafe_allow_html=True
+                )
 
 st.markdown("---")
 
