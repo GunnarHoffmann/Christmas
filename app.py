@@ -1,3 +1,5 @@
+#test
+
 import streamlit as st
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
@@ -163,17 +165,17 @@ st.markdown(f"""
         font-family: 'Inter', sans-serif !important;
     }}
 
-    h1 {{
-        font-size: 2.5em;
-        color: white !important;
-        text-align: center;
-        font-weight: 700;
+    /* Make all headings outside of boxed containers black */
+    h1, h2, h3, h4, h5, h6 {{
+        color: #000 !important; /* black for titles outside boxes */
+        font-weight: 600;
         margin-bottom: 0.5em;
     }}
 
-    h2, h3 {{
-        color: #2c3e50;
-        font-weight: 600;
+    h1 {{
+        font-size: 2.5em;
+        text-align: center;
+        font-weight: 700;
     }}
 
     .stButton>button {{
@@ -238,12 +240,12 @@ st.markdown(f"""
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     }}
 
-    /* Text in Boxen auf weiß setzen */
-    .info-box h2, .info-box h3, .info-box h4, .info-box p {{
+    /* Text in boxed components should remain white */
+    .info-box h1, .info-box h2, .info-box h3, .info-box h4, .info-box h5, .info-box h6, .info-box p {{
         color: white !important;
     }}
 
-    .product-card h2, .product-card h3, .product-card h4, .product-card p {{
+    .product-card h1, .product-card h2, .product-card h3, .product-card h4, .product-card h5, .product-card h6, .product-card p {{
         color: white !important;
     }}
 
@@ -273,9 +275,9 @@ st.markdown(f"""
         line-height: 1.8;
     }}
 
-    /* Subheader Styling */
+    /* Subheader Styling inside general markdown - keep black unless inside a box */
     [data-testid="stMarkdownContainer"] h3 {{
-        color: white !important;
+        color: #000 !important;
         font-weight: 600;
         margin-top: 1em;
     }}
