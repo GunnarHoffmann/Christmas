@@ -210,17 +210,18 @@ st.markdown(f"""
 
     /* Info Boxen */
     .info-box {{
-        background: {card_bg};
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 15px;
         padding: 1.5em;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         margin: 1em 0;
-        border-left: 4px solid {border_color};
+        border-left: 4px solid white;
+        color: white;
     }}
 
     /* Produktkarten */
     .product-card {{
-        background: {card_bg};
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 15px;
         padding: 1.5em;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -229,11 +230,21 @@ st.markdown(f"""
         min-height: 280px;
         display: flex;
         flex-direction: column;
+        color: white;
     }}
 
     .product-card:hover {{
         transform: translateY(-5px);
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }}
+
+    /* Text in Boxen auf weiß setzen */
+    .info-box h2, .info-box h3, .info-box h4, .info-box p {{
+        color: white !important;
+    }}
+
+    .product-card h2, .product-card h3, .product-card h4, .product-card p {{
+        color: white !important;
     }}
 
     /* Links */
