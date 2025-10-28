@@ -280,12 +280,20 @@ st.markdown("<h1>🎄 Gesundheits & Wellness Center</h1>", unsafe_allow_html=Tru
 
 # --- User Authentication Section ---
 if st.session_state.user_info:
-    # User is signed in - show welcome message
-    user_name = st.session_state.user_info.get('name', st.session_state.user_info.get('email', 'User'))
+    # User is signed in - show welcome message with name and email
+    user_name = st.session_state.user_info.get('name', 'Benutzer')
+    user_email = st.session_state.user_info.get('email', '')
+    user_picture = st.session_state.user_info.get('picture', '')
+
+    # Build the user info display
+    profile_img = f'<img src="{user_picture}" style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; margin-bottom: 10px;" />' if user_picture else ''
+
     st.markdown(f"""
-    <div style="text-align: center; margin: 1em 0; padding: 1em; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white;">
+    <div class="info-box" style="text-align: center; margin: 1em 0; padding: 1.5em; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; border-left-color: white;">
+        {profile_img}
         <h3 style="margin: 0; color: white;">Willkommen, {user_name}! 👋</h3>
-        <p style="margin: 0.5em 0 0 0; color: rgba(255,255,255,0.9); font-size: 0.95em;">Schön, dass du da bist!</p>
+        <p style="margin: 0.5em 0 0 0; color: rgba(255,255,255,0.95); font-size: 1em;">📧 {user_email}</p>
+        <p style="margin: 0.5em 0 0 0; color: rgba(255,255,255,0.9); font-size: 0.9em;">Schön, dass du da bist!</p>
     </div>
     """, unsafe_allow_html=True)
 else:
