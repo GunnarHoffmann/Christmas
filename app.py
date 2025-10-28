@@ -165,9 +165,9 @@ st.markdown(f"""
         font-family: 'Inter', sans-serif !important;
     }}
 
-    /* Make all headings outside of boxed containers black */
+    /* Make all headings outside of boxed containers blue */
     h1, h2, h3, h4, h5, h6 {{
-        color: #000 !important; /* black for titles outside boxes */
+        color: #667eea !important; /* blue for titles outside boxes */
         font-weight: 600;
         margin-bottom: 0.5em;
     }}
@@ -275,9 +275,9 @@ st.markdown(f"""
         line-height: 1.8;
     }}
 
-    /* Subheader Styling inside general markdown - keep black unless inside a box */
+    /* Subheader Styling inside general markdown - blue unless inside a box */
     [data-testid="stMarkdownContainer"] h3 {{
-        color: #000 !important;
+        color: #667eea !important;
         font-weight: 600;
         margin-top: 1em;
     }}
