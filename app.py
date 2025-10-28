@@ -328,11 +328,11 @@ with auth_col2:
         if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
             auth_url = get_google_auth_url()
             if auth_url:
-                # Render a plain anchor so the OAuth page opens in the same window/tab
-                # Inline styles make it look like the app's primary button
+                # Use a JS-driven button to force navigation in the same tab/window
+                # Some browsers or extensions may still open links in new tabs when using anchors.
                 st.markdown(f"""
                 <div style="text-align: center; margin: 0.5em 0;">
-                  <a href="{auth_url}" style="display:inline-block; width:100%; max-width:360px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.75em 1.2em; border-radius: 12px; font-weight: 600; text-decoration: none;">🔐 Mit Google anmelden (optional)</a>
+                  <button onclick="window.location.href='{auth_url}';" style="display:inline-block; width:100%; max-width:360px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.75em 1.2em; border-radius: 12px; font-weight: 600; border: none; cursor: pointer;">🔐 Mit Google anmelden (optional)</button>
                 </div>
                 """, unsafe_allow_html=True)
 
