@@ -291,7 +291,7 @@ if st.session_state.user_info:
     st.markdown(f"""
     <div class="info-box" style="text-align: center; margin: 1em 0; padding: 1.5em; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; border-left-color: white;">
         {profile_img}
-        <h3 style="margin: 0; color: white;">Willkommen, {user_name}! 👋</h3>
+        <h3 style="margin: 0; color: white !important; background: none !important; -webkit-text-fill-color: white !important;">Willkommen, {user_name}! 👋</h3>
         <p style="margin: 0.5em 0 0 0; color: rgba(255,255,255,0.95); font-size: 1em;">📧 {user_email}</p>
         <p style="margin: 0.5em 0 0 0; color: rgba(255,255,255,0.9); font-size: 0.9em;">Schön, dass du da bist!</p>
     </div>
