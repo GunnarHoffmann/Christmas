@@ -1336,12 +1336,12 @@ components.html(tetris_html, height=900, scrolling=False)
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; margin-top: 2em; margin-bottom: 2em;">
-    <div class="product-card" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%); border: 3px solid #667eea;">
+    <div class="product-card" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 3px solid #667eea;">
         <div style="text-align: center; font-size: 3em; margin-bottom: 0.5em;">💝</div>
         <h3 style="text-align: center; color: white !important; margin-bottom: 0.5em;">
             Gefällt dir diese App?
         </h3>
-        <p style="text-align: center; color: #2c3e50; margin-bottom: 1.5em; font-size: 1.05em;">
+        <p style="text-align: center; color: white; margin-bottom: 1.5em; font-size: 1.05em;">
             Wenn dir diese App weitergeholfen hat und du meine Arbeit unterstützen möchtest, freue ich mich über eine kleine Spende!
         </p>
         <div style="text-align: center;">
@@ -1349,7 +1349,7 @@ st.markdown("""
                 <span style="font-size: 1.3em; margin-right: 0.3em;">💙</span> Spende via PayPal
             </a>
         </div>
-        <p style="text-align: center; color: #667eea; margin-top: 1em; font-size: 0.95em; font-weight: 600;">
+        <p style="text-align: center; color: white; margin-top: 1em; font-size: 0.95em; font-weight: 600;">
             Vielen Dank für deine Unterstützung!
         </p>
     </div>
