@@ -165,9 +165,7 @@ st.markdown(f"""
 
     h1 {{
         font-size: 2.5em;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: white !important;
         text-align: center;
         font-weight: 700;
         margin-bottom: 0.5em;
@@ -266,9 +264,7 @@ st.markdown(f"""
 
     /* Subheader Styling */
     [data-testid="stMarkdownContainer"] h3 {{
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: white !important;
         font-weight: 600;
         margin-top: 1em;
     }}
@@ -1331,7 +1327,7 @@ st.markdown("""
 <div style="text-align: center; margin-top: 2em; margin-bottom: 2em;">
     <div class="product-card" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%); border: 3px solid #667eea;">
         <div style="text-align: center; font-size: 3em; margin-bottom: 0.5em;">💝</div>
-        <h3 style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5em;">
+        <h3 style="text-align: center; color: white !important; margin-bottom: 0.5em;">
             Gefällt dir diese App?
         </h3>
         <p style="text-align: center; color: #2c3e50; margin-bottom: 1.5em; font-size: 1.05em;">
