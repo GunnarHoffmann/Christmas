@@ -43,11 +43,7 @@ def get_google_auth_url():
 
     try:
         # For local development use localhost, for production use the configured REDIRECT_URI
-        redirect_uri = REDIRECT_URI or 'http://localhost:8501'
-        
-        # Ensure we have a valid redirect URI for the environment
-        if st.runtime.exists() and not REDIRECT_URI:
-            st.error("Please set REDIRECT_URI in your Streamlit secrets/environment variables")
+        redirect_uri = REDIRECT_URI if REDIRECT_URI else 'http://localhost:8501'
 
         client_config = {
             "web": {
@@ -337,15 +333,11 @@ with auth_col2:
         if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
             auth_url = get_google_auth_url()
             if auth_url:
-                # Use link_button with _self target to force same-window navigation
-                st.markdown(
-                    f'<div class="stButton"><a href="{auth_url}" target="_self" '
-                    f'style="text-decoration: none; display: block;">'
-                    f'<button style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); '
-                    f'color: white; padding: 0.75em 1.2em; border-radius: 12px; font-weight: 600; border: none; '
-                    f'cursor: pointer; font-family: \'Source Sans Pro\', sans-serif;">🔐 Mit Google anmelden (optional)</button>'
-                    f'</a></div>',
-                    unsafe_allow_html=True
+                # Use native Streamlit link_button for better compatibility
+                st.link_button(
+                    "🔐 Mit Google anmelden (optional)",
+                    auth_url,
+                    use_container_width=True
                 )
 
 st.markdown("---")
