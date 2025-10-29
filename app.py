@@ -5,7 +5,7 @@
 
 #old123
 
-#test xyz 12345
+#local
 import streamlit as st
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
