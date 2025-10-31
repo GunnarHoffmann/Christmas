@@ -544,6 +544,9 @@ st.markdown("""
 st.markdown("""
 <div class="cat-container">
     <div class="cat">🐱</div>
+</div>
+""", unsafe_allow_html=True)
+
 # --- Dog on the left side ---
 st.markdown("""
 <div class="dog-container">
