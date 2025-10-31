@@ -331,6 +331,39 @@ st.markdown(f"""
         margin: 0 10px;
     }}
 
+    /* Spider Animation */
+    @keyframes spiderDangle {{
+        0%, 100% {{
+            transform: translateY(0) rotate(-5deg);
+        }}
+        50% {{
+            transform: translateY(15px) rotate(5deg);
+        }}
+    }}
+
+    .spider-container {{
+        position: fixed;
+        left: 20px;
+        top: 100px;
+        z-index: 9999;
+        pointer-events: none;
+    }}
+
+    .spider-web {{
+        width: 2px;
+        height: 80px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.7));
+        margin: 0 auto;
+    }}
+
+    .spider {{
+        font-size: 3em;
+        animation: spiderDangle 2s ease-in-out infinite;
+        display: block;
+        text-align: center;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    }}
+
     /* Snowflake Animation */
     @keyframes snowfall {{
         0% {{
@@ -363,6 +396,14 @@ st.markdown("<h1>🎄 Gesundheits & Wellness Center <span class='santa-title'>�
 st.markdown("""
 <div class="santa-container">
     <div class="santa">🎅🛷</div>
+</div>
+""", unsafe_allow_html=True)
+
+# --- Spider dangling on the left side ---
+st.markdown("""
+<div class="spider-container">
+    <div class="spider-web"></div>
+    <div class="spider">🕷️</div>
 </div>
 """, unsafe_allow_html=True)
 
