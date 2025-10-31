@@ -155,9 +155,9 @@ if dark_mode:
     card_bg = "#0f3460"
     border_color = "#e94560"
 else:
-    bg_gradient = "linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 50%, #3d7ea6 100%)"
+    bg_gradient = "linear-gradient(135deg, #0a1929 0%, #1a2332 50%, #2d3e50 100%)"
     text_color = "#ffffff"
-    card_bg = "#4a7ba7"
+    card_bg = "#2d3e50"
     border_color = "#667eea"
 
 st.markdown(f"""
@@ -412,7 +412,7 @@ else:
     # User is not signed in - show optional sign-in
     if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
         st.markdown("""
-        <div style="text-align: center; margin: 1em 0; padding: 1em; background: linear-gradient(135deg, #4a7ba7 0%, #5a8bb7 100%); border-radius: 15px; border: 2px solid #667eea;">
+        <div style="text-align: center; margin: 1em 0; padding: 1em; background: linear-gradient(135deg, #2d3e50 0%, #3d4e60 100%); border-radius: 15px; border: 2px solid #667eea;">
             <p style="margin: 0; color: white; font-weight: 600;">Melde dich optional mit deinem Google-Konto an für eine personalisierte Begrüßung</p>
         </div>
         """, unsafe_allow_html=True)
