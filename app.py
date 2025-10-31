@@ -420,6 +420,50 @@ st.markdown(f"""
         transform-origin: top center;
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
     }}
+
+    /* Dog Animation */
+    @keyframes dogBounce {{
+        0%, 100% {{
+            transform: translateY(0) rotate(-5deg);
+        }}
+        50% {{
+            transform: translateY(-15px) rotate(5deg);
+        }}
+    }}
+
+    @keyframes dogWag {{
+        0%, 100% {{
+            transform: rotate(0deg);
+        }}
+        25% {{
+            transform: rotate(-10deg);
+        }}
+        75% {{
+            transform: rotate(10deg);
+        }}
+    }}
+
+    .dog-container {{
+        position: fixed;
+        left: 30px;
+        bottom: 150px;
+        z-index: 9999;
+        pointer-events: none;
+        animation: dogBounce 2s ease-in-out infinite;
+    }}
+
+    .dog {{
+        font-size: 4em;
+        text-align: center;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        display: inline-block;
+    }}
+
+    .dog-tail {{
+        display: inline-block;
+        animation: dogWag 0.5s ease-in-out infinite;
+        transform-origin: left center;
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -470,6 +514,13 @@ st.markdown("""
 <div class="spider-container">
     <div class="spider-web"></div>
     <div class="spider">🕷️</div>
+</div>
+""", unsafe_allow_html=True)
+
+# --- Dog on the left side ---
+st.markdown("""
+<div class="dog-container">
+    <div class="dog">🐕</div>
 </div>
 """, unsafe_allow_html=True)
 
