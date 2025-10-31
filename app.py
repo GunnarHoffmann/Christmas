@@ -421,6 +421,29 @@ st.markdown(f"""
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
     }}
 
+    /* Cat Animation */
+    @keyframes catSway {{
+        0%, 100% {{
+            transform: rotate(-3deg);
+        }}
+        50% {{
+            transform: rotate(3deg);
+        }}
+    }}
+
+    .cat-container {{
+        position: fixed;
+        top: 200px;
+        right: 30px;
+        z-index: 9999;
+        pointer-events: none;
+    }}
+
+    .cat {{
+        font-size: 3em;
+        text-align: center;
+        animation: catSway 2.5s ease-in-out infinite;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
     /* Dog Animation */
     @keyframes dogBounce {{
         0%, 100% {{
@@ -517,6 +540,10 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# --- Cat on the right side ---
+st.markdown("""
+<div class="cat-container">
+    <div class="cat">🐱</div>
 # --- Dog on the left side ---
 st.markdown("""
 <div class="dog-container">
