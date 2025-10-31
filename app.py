@@ -353,6 +353,40 @@ st.markdown(f"""
         z-index: 9999;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
     }}
+
+    /* Spider Animation */
+    @keyframes spiderSwing {{
+        0%, 100% {{
+            transform: rotate(-5deg);
+        }}
+        50% {{
+            transform: rotate(5deg);
+        }}
+    }}
+
+    .spider-container {{
+        position: fixed;
+        top: 50px;
+        right: 50px;
+        z-index: 9999;
+        pointer-events: none;
+    }}
+
+    .spider-web {{
+        width: 2px;
+        height: 100px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3));
+        margin: 0 auto;
+        box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+    }}
+
+    .spider {{
+        font-size: 3em;
+        text-align: center;
+        animation: spiderSwing 3s ease-in-out infinite;
+        transform-origin: top center;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -388,6 +422,14 @@ st.markdown("""
 <div class="snowflake" style="left: 95%; animation-duration: 15s; animation-delay: 0.6s; font-size: 1.2em;">❄</div>
 <div class="snowflake" style="left: 5%; animation-duration: 12s; animation-delay: 2.6s; font-size: 1.7em;">❄</div>
 <div class="snowflake" style="left: 12%; animation-duration: 13s; animation-delay: 4.2s; font-size: 1.0em;">❄</div>
+""", unsafe_allow_html=True)
+
+# --- Spider hanging on the right ---
+st.markdown("""
+<div class="spider-container">
+    <div class="spider-web"></div>
+    <div class="spider">🕷️</div>
+</div>
 """, unsafe_allow_html=True)
 
 # --- User Authentication Section ---
