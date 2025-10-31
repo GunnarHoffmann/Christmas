@@ -554,57 +554,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- User Authentication Section ---
-if st.session_state.user_info:
-    # User is signed in - show welcome message with name and email
-    user_name = st.session_state.user_info.get('name', 'Benutzer')
-    user_email = st.session_state.user_info.get('email', '')
-    user_picture = st.session_state.user_info.get('picture', '')
-
-    # Build the user info display
-    profile_img = f'<img src="{user_picture}" style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; margin-bottom: 10px;" />' if user_picture else ''
-
-    st.markdown(f"""
-    <div class="info-box" style="text-align: center; margin: 1em 0; padding: 1.5em; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; border-left-color: white;">
-        {profile_img}
-        <h3 style="margin: 0; color: white !important; background: none !important; background-image: none !important; background-clip: initial !important; -webkit-background-clip: initial !important; -webkit-text-fill-color: white !important;">Willkommen, {user_name}! 👋</h3>
-        <p style="margin: 0.5em 0 0 0; color: white !important; font-size: 1em;">📧 {user_email}</p>
-        <p style="margin: 0.5em 0 0 0; color: white !important; font-size: 0.9em;">Schön, dass du da bist!</p>
-    </div>
-    """, unsafe_allow_html=True)
-else:
-    # User is not signed in - show optional sign-in
-    if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
-        st.markdown("""
-        <div style="text-align: center; margin: 1em 0; padding: 1em; background: linear-gradient(135deg, #2d3e50 0%, #3d4e60 100%); border-radius: 15px; border: 2px solid #667eea;">
-            <p style="margin: 0; color: white; font-weight: 600;">Melde dich optional mit deinem Google-Konto an für eine personalisierte Begrüßung</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-# --- Sign In / Sign Out Controls ---
-auth_col1, auth_col2, auth_col3 = st.columns([1, 2, 1])
-with auth_col2:
-    if st.session_state.user_info:
-        # Show sign-out button
-        if st.button("🚪 Abmelden", key="sign_out", use_container_width=True):
-            st.session_state.user_info = None
-            st.session_state.oauth_state = None
-            st.rerun()
-    else:
-        # Show sign-in button (optional)
-        if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
-            auth_url = get_google_auth_url()
-            if auth_url:
-                # Use native Streamlit link_button for better compatibility
-                st.link_button(
-                    "🔐 Mit Google anmelden (optional)",
-                    auth_url,
-                    use_container_width=True
-                )
-
-st.markdown("---")
-
-# --- Dark Mode & Music Controls ---
+# --- Dark Mode & Music Controls at Top ---
 col_left, col_center, col_right = st.columns([2, 3, 2])
 
 with col_left:
@@ -635,378 +585,447 @@ if st.session_state.music_playing:
     </div>
     """, unsafe_allow_html=True)
 
-# --- Stock Price Tracker ---
 st.markdown("---")
-st.markdown("""
-<div class="info-box">
-    <h3 style="margin-top: 0;">📈 Aktien-Kurs Tracker</h3>
-    <p>Gib einen Firmennamen oder ein Aktien-Symbol ein (z.B. MSFT, AAPL, TSLA)</p>
-</div>
-""", unsafe_allow_html=True)
 
-company_input = st.text_input("Firmenname oder Aktien-Symbol", placeholder="z.B. MSFT, AAPL, GOOGL, TSLA")
+# --- Create Tabs for Better Organization ---
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["🏠 Home", "📊 Stock Tracker", "💪 Health Tools", "🎮 Games", "💝 Support"])
 
-if company_input:
-    try:
-        # Fetch stock data
-        ticker = yf.Ticker(company_input.upper())
+# ============================================================================
+# TAB 1: HOME
+# ============================================================================
+with tab1:
+    # --- User Authentication Section ---
+    if st.session_state.user_info:
+        # User is signed in - show welcome message with name and email
+        user_name = st.session_state.user_info.get('name', 'Benutzer')
+        user_email = st.session_state.user_info.get('email', '')
+        user_picture = st.session_state.user_info.get('picture', '')
 
-        # Get current data
-        info = ticker.info
-        hist = ticker.history(period="6mo")  # Get 6 months of historical data
+        # Build the user info display
+        profile_img = f'<img src="{user_picture}" style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; margin-bottom: 10px;" />' if user_picture else ''
 
-        if not hist.empty:
-            current_price = hist['Close'].iloc[-1]
-            prev_close = hist['Close'].iloc[-2] if len(hist) > 1 else current_price
-            price_change = current_price - prev_close
-            price_change_pct = (price_change / prev_close * 100) if prev_close != 0 else 0
-
-            # Display current price
-            change_color = "green" if price_change >= 0 else "red"
-            change_symbol = "📈" if price_change >= 0 else "📉"
-
-            company_name = info.get('longName', company_input.upper())
-
-            st.markdown(f"""
-            <div class="info-box" style="border-left-color: {change_color};">
-                <h2 style="margin-top: 0; text-align: center;">{company_name}</h2>
-                <p style="text-align: center; font-size: 2em; font-weight: 700; color: {change_color};">
-                    ${current_price:.2f}
-                </p>
-                <p style="text-align: center; font-size: 1.2em; color: {change_color};">
-                    {change_symbol} {price_change:+.2f} ({price_change_pct:+.2f}%)
-                </p>
+        st.markdown(f"""
+        <div class="info-box" style="text-align: center; margin: 1em 0; padding: 1.5em; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; border-left-color: white;">
+            {profile_img}
+            <h3 style="margin: 0; color: white !important; background: none !important; background-image: none !important; background-clip: initial !important; -webkit-background-clip: initial !important; -webkit-text-fill-color: white !important;">Willkommen, {user_name}! 👋</h3>
+            <p style="margin: 0.5em 0 0 0; color: white !important; font-size: 1em;">📧 {user_email}</p>
+            <p style="margin: 0.5em 0 0 0; color: white !important; font-size: 0.9em;">Schön, dass du da bist!</p>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        # User is not signed in - show optional sign-in
+        if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
+            st.markdown("""
+            <div style="text-align: center; margin: 1em 0; padding: 1em; background: linear-gradient(135deg, #2d3e50 0%, #3d4e60 100%); border-radius: 15px; border: 2px solid #667eea;">
+                <p style="margin: 0; color: white; font-weight: 600;">Melde dich optional mit deinem Google-Konto an für eine personalisierte Begrüßung</p>
             </div>
             """, unsafe_allow_html=True)
 
-            # Create historical price chart
-            fig, ax = plt.subplots(figsize=(10, 5))
-            ax.plot(hist.index, hist['Close'], linewidth=2, color='#667eea', label='Schlusskurs')
-            ax.fill_between(hist.index, hist['Close'], alpha=0.3, color='#667eea')
+    # --- Sign In / Sign Out Controls ---
+    auth_col1, auth_col2, auth_col3 = st.columns([1, 2, 1])
+    with auth_col2:
+        if st.session_state.user_info:
+            # Show sign-out button
+            if st.button("🚪 Abmelden", key="sign_out", use_container_width=True):
+                st.session_state.user_info = None
+                st.session_state.oauth_state = None
+                st.rerun()
+        else:
+            # Show sign-in button (optional)
+            if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
+                auth_url = get_google_auth_url()
+                if auth_url:
+                    # Use native Streamlit link_button for better compatibility
+                    st.link_button(
+                        "🔐 Mit Google anmelden (optional)",
+                        auth_url,
+                        use_container_width=True
+                    )
 
-            ax.set_xlabel('Datum', fontsize=11)
-            ax.set_ylabel('Preis (USD)', fontsize=11)
-            ax.set_title(f'{company_name} - Kursverlauf (6 Monate)', fontsize=13, fontweight='bold')
-            ax.grid(True, alpha=0.3)
-            ax.legend()
+    st.markdown("---")
+
+    # --- Einführungstext ---
+    st.markdown("""
+    ### Gesundheit verstehen – Ernährung, Bewegung und mehr
+
+    Eine ausgewogene **Ernährung** und regelmäßige **Bewegung** sind die Basis für körperliche und geistige Gesundheit. Sie tragen wesentlich dazu bei, Krankheiten vorzubeugen, das Wohlbefinden zu steigern und die Leistungsfähigkeit zu erhalten.
+
+    Ein einfaches, aber weit verbreitetes Maß zur Einschätzung des Körpergewichts in Relation zur Körpergröße ist der **Body-Mass-Index (BMI)**. Auch wenn der BMI nicht zwischen Muskel- und Fettmasse unterscheidet und damit nur eine grobe Orientierung bietet, kann er helfen, erste Hinweise auf mögliche gesundheitliche Risiken zu geben.
+    """)
+
+    st.markdown("---")
+    st.markdown("### Fit mit Technik: Was dein Körper dir sonst noch sagt")
+
+    st.markdown("""
+    Mit den **Health Tools** kannst du deinen persönlichen BMI berechnen, deinen Kalorienbedarf ermitteln und deinen täglichen Wasserbedarf kalkulieren.
+
+    Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
+    """)
+
+    # --- Produktempfehlungen ---
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("""
+        <div class="product-card">
+            <div style="text-align: center; font-size: 4em; margin-bottom: 0.3em;">📊</div>
+            <h4 style="text-align: center; margin-top: 0;">Körperfettwaagen</h4>
+            <p style="text-align: center;">Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.</p>
+            <div style="text-align: center; margin-top: 1em;">
+                <a href="https://www.withings.com/de/de/body-comp" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.6em 1.5em; border-radius: 8px; text-decoration: none; font-weight: 600;">Mehr erfahren →</a>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div class="product-card">
+            <div style="text-align: center; font-size: 4em; margin-bottom: 0.3em;">⌚</div>
+            <h4 style="text-align: center; margin-top: 0;">Fitness-Tracker</h4>
+            <p style="text-align: center;">Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.</p>
+            <div style="text-align: center; margin-top: 1em;">
+                <a href="https://www.withings.com/de/de/scanwatch-nova" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.6em 1.5em; border-radius: 8px; text-decoration: none; font-weight: 600;">Mehr erfahren →</a>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("""
+    In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
+    """)
+
+# ============================================================================
+# TAB 2: STOCK TRACKER
+# ============================================================================
+with tab2:
+    st.markdown("""
+    <div class="info-box">
+        <h3 style="margin-top: 0;">📈 Aktien-Kurs Tracker</h3>
+        <p>Gib einen Firmennamen oder ein Aktien-Symbol ein (z.B. MSFT, AAPL, TSLA)</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    company_input = st.text_input("Firmenname oder Aktien-Symbol", placeholder="z.B. MSFT, AAPL, GOOGL, TSLA", key="stock_input")
+
+    if company_input:
+        try:
+            # Fetch stock data
+            ticker = yf.Ticker(company_input.upper())
+
+            # Get current data
+            info = ticker.info
+            hist = ticker.history(period="6mo")  # Get 6 months of historical data
+
+            if not hist.empty:
+                current_price = hist['Close'].iloc[-1]
+                prev_close = hist['Close'].iloc[-2] if len(hist) > 1 else current_price
+                price_change = current_price - prev_close
+                price_change_pct = (price_change / prev_close * 100) if prev_close != 0 else 0
+
+                # Display current price
+                change_color = "green" if price_change >= 0 else "red"
+                change_symbol = "📈" if price_change >= 0 else "📉"
+
+                company_name = info.get('longName', company_input.upper())
+
+                st.markdown(f"""
+                <div class="info-box" style="border-left-color: {change_color};">
+                    <h2 style="margin-top: 0; text-align: center;">{company_name}</h2>
+                    <p style="text-align: center; font-size: 2em; font-weight: 700; color: {change_color};">
+                        ${current_price:.2f}
+                    </p>
+                    <p style="text-align: center; font-size: 1.2em; color: {change_color};">
+                        {change_symbol} {price_change:+.2f} ({price_change_pct:+.2f}%)
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+
+                # Create historical price chart
+                fig, ax = plt.subplots(figsize=(10, 5))
+                ax.plot(hist.index, hist['Close'], linewidth=2, color='#667eea', label='Schlusskurs')
+                ax.fill_between(hist.index, hist['Close'], alpha=0.3, color='#667eea')
+
+                ax.set_xlabel('Datum', fontsize=11)
+                ax.set_ylabel('Preis (USD)', fontsize=11)
+                ax.set_title(f'{company_name} - Kursverlauf (6 Monate)', fontsize=13, fontweight='bold')
+                ax.grid(True, alpha=0.3)
+                ax.legend()
+                plt.xticks(rotation=45)
+                plt.tight_layout()
+
+                st.pyplot(fig)
+
+                # Additional stock information
+                col1, col2, col3 = st.columns(3)
+
+                with col1:
+                    st.markdown(f"""
+                    <div style="text-align: center; padding: 10px;">
+                        <p style="font-size: 0.9em; color: #667eea;">📊 Höchstkurs (52 Wo.)</p>
+                        <p style="font-size: 1.3em; font-weight: 600;">${info.get('fiftyTwoWeekHigh', 'N/A')}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with col2:
+                    st.markdown(f"""
+                    <div style="text-align: center; padding: 10px;">
+                        <p style="font-size: 0.9em; color: #667eea;">📉 Tiefstkurs (52 Wo.)</p>
+                        <p style="font-size: 1.3em; font-weight: 600;">${info.get('fiftyTwoWeekLow', 'N/A')}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with col3:
+                    market_cap = info.get('marketCap', 0)
+                    if market_cap:
+                        market_cap_b = market_cap / 1_000_000_000
+                        st.markdown(f"""
+                        <div style="text-align: center; padding: 10px;">
+                            <p style="font-size: 0.9em; color: #667eea;">💰 Marktkapitalisierung</p>
+                            <p style="font-size: 1.3em; font-weight: 600;">${market_cap_b:.2f}B</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        st.markdown(f"""
+                        <div style="text-align: center; padding: 10px;">
+                            <p style="font-size: 0.9em; color: #667eea;">💰 Marktkapitalisierung</p>
+                            <p style="font-size: 1.3em; font-weight: 600;">N/A</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+            else:
+                st.warning(f"⚠️ Keine Daten für '{company_input}' gefunden. Bitte überprüfe das Symbol.")
+
+        except Exception as e:
+            st.error(f"❌ Fehler beim Abrufen der Aktiendaten: {str(e)}")
+            st.info("💡 Tipp: Versuche es mit einem bekannten Aktien-Symbol wie MSFT, AAPL, GOOGL oder TSLA")
+
+# ============================================================================
+# TAB 3: HEALTH TOOLS
+# ============================================================================
+with tab3:
+    # --- BMI Calculator ---
+    st.markdown("""
+    <div class="info-box">
+        <h3 style="margin-top: 0;">🧮 Berechne deinen BMI</h3>
+        <p>Gib deine Daten ein, um deinen persönlichen Body-Mass-Index zu berechnen.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        gewicht = st.number_input("Gewicht (in kg)", min_value=30.0, max_value=300.0, value=75.0, key="gewicht_bmi")
+    with col2:
+        groesse = st.number_input("Größe (in cm)", min_value=100.0, max_value=250.0, value=175.0, key="groesse_bmi")
+
+    if st.button("✨ BMI berechnen", key="bmi_calculate"):
+        bmi = gewicht / ((groesse / 100) ** 2)
+
+        # Bewertung
+        if bmi < 18.5:
+            kategorie = "Untergewicht"
+            farbe = "yellow"
+            kategorie_emoji = "⚠️"
+        elif bmi < 25:
+            kategorie = "Normalgewicht"
+            farbe = "green"
+            kategorie_emoji = "✅"
+        elif bmi < 30:
+            kategorie = "Übergewicht"
+            farbe = "orange"
+            kategorie_emoji = "⚠️"
+        else:
+            kategorie = "Adipositas"
+            farbe = "red"
+            kategorie_emoji = "🔴"
+
+        st.markdown(f"""
+        <div class="info-box" style="border-left-color: {farbe};">
+            <h2 style="margin-top: 0; text-align: center;">Dein BMI: <strong>{bmi:.1f}</strong></h2>
+            <p style="text-align: center; font-size: 1.2em;">{kategorie_emoji} <strong>Kategorie:</strong> {kategorie}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # BMI Verlauf speichern
+        st.session_state.bmi_history.append({
+            'datum': datetime.now(),
+            'bmi': bmi,
+            'gewicht': gewicht,
+            'groesse': groesse
+        })
+
+        # --- Grafik ---
+        fig, ax = plt.subplots(figsize=(8, 1.5))
+
+        bereiche = [
+            (10, 18.5, 'Untergewicht', 'yellow'),
+            (18.5, 25, 'Normalgewicht', 'green'),
+            (25, 30, 'Übergewicht', 'orange'),
+            (30, 40, 'Adipositas', 'red'),
+        ]
+
+        for start, end, label, color in bereiche:
+            ax.axvspan(start, end, color=color, alpha=0.5)
+            ax.text((start + end) / 2, 0.7, label, ha='center', va='center', fontsize=9)
+
+        ax.axvline(bmi, color="black", linewidth=3)
+        ax.text(bmi + 0.4, 0.05, f"{bmi:.1f}", ha='left', va='bottom', fontsize=10, weight='bold')
+
+        ax.set_xlim(10, 40)
+        ax.set_ylim(0, 1.2)
+        ax.set_yticks([])
+        ax.set_xlabel("BMI", fontsize=10)
+        ax.set_title("Einordnung deines BMI", fontsize=12)
+
+        st.pyplot(fig)
+
+    # --- BMI Verlauf anzeigen ---
+    if len(st.session_state.bmi_history) > 0:
+        st.markdown("---")
+        st.markdown("### 📈 Dein BMI-Verlauf")
+
+        df = pd.DataFrame(st.session_state.bmi_history)
+
+        if len(df) > 1:
+            fig2, ax2 = plt.subplots(figsize=(10, 4))
+            ax2.plot(df['datum'], df['bmi'], marker='o', linewidth=2, markersize=8, color='#667eea')
+            ax2.axhline(y=18.5, color='yellow', linestyle='--', alpha=0.5, label='Untergewicht')
+            ax2.axhline(y=25, color='green', linestyle='--', alpha=0.5, label='Normalgewicht')
+            ax2.axhline(y=30, color='orange', linestyle='--', alpha=0.5, label='Übergewicht')
+            ax2.set_ylabel('BMI', fontsize=11)
+            ax2.set_xlabel('Datum', fontsize=11)
+            ax2.set_title('BMI-Entwicklung über Zeit', fontsize=13, fontweight='bold')
+            ax2.legend()
+            ax2.grid(True, alpha=0.3)
             plt.xticks(rotation=45)
             plt.tight_layout()
-
-            st.pyplot(fig)
-
-            # Additional stock information
-            col1, col2, col3 = st.columns(3)
-
-            with col1:
-                st.markdown(f"""
-                <div style="text-align: center; padding: 10px;">
-                    <p style="font-size: 0.9em; color: #667eea;">📊 Höchstkurs (52 Wo.)</p>
-                    <p style="font-size: 1.3em; font-weight: 600;">${info.get('fiftyTwoWeekHigh', 'N/A')}</p>
-                </div>
-                """, unsafe_allow_html=True)
-
-            with col2:
-                st.markdown(f"""
-                <div style="text-align: center; padding: 10px;">
-                    <p style="font-size: 0.9em; color: #667eea;">📉 Tiefstkurs (52 Wo.)</p>
-                    <p style="font-size: 1.3em; font-weight: 600;">${info.get('fiftyTwoWeekLow', 'N/A')}</p>
-                </div>
-                """, unsafe_allow_html=True)
-
-            with col3:
-                market_cap = info.get('marketCap', 0)
-                if market_cap:
-                    market_cap_b = market_cap / 1_000_000_000
-                    st.markdown(f"""
-                    <div style="text-align: center; padding: 10px;">
-                        <p style="font-size: 0.9em; color: #667eea;">💰 Marktkapitalisierung</p>
-                        <p style="font-size: 1.3em; font-weight: 600;">${market_cap_b:.2f}B</p>
-                    </div>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.markdown(f"""
-                    <div style="text-align: center; padding: 10px;">
-                        <p style="font-size: 0.9em; color: #667eea;">💰 Marktkapitalisierung</p>
-                        <p style="font-size: 1.3em; font-weight: 600;">N/A</p>
-                    </div>
-                    """, unsafe_allow_html=True)
+            st.pyplot(fig2)
         else:
-            st.warning(f"⚠️ Keine Daten für '{company_input}' gefunden. Bitte überprüfe das Symbol.")
+            st.info("📊 Berechne deinen BMI mehrmals, um den Verlauf zu sehen!")
 
-    except Exception as e:
-        st.error(f"❌ Fehler beim Abrufen der Aktiendaten: {str(e)}")
-        st.info("💡 Tipp: Versuche es mit einem bekannten Aktien-Symbol wie MSFT, AAPL, GOOGL oder TSLA")
+        # Reset-Button für Verlauf
+        if st.button("🗑️ Verlauf löschen", key="bmi_history_delete"):
+            st.session_state.bmi_history = []
+            st.rerun()
 
-st.markdown("---")
-
-# --- Einführungstext ---
-st.markdown("""
-### Gesundheit verstehen – Ernährung, Bewegung und mehr
-
-Eine ausgewogene **Ernährung** und regelmäßige **Bewegung** sind die Basis für körperliche und geistige Gesundheit. Sie tragen wesentlich dazu bei, Krankheiten vorzubeugen, das Wohlbefinden zu steigern und die Leistungsfähigkeit zu erhalten.
-
-Ein einfaches, aber weit verbreitetes Maß zur Einschätzung des Körpergewichts in Relation zur Körpergröße ist der **Body-Mass-Index (BMI)**. Auch wenn der BMI nicht zwischen Muskel- und Fettmasse unterscheidet und damit nur eine grobe Orientierung bietet, kann er helfen, erste Hinweise auf mögliche gesundheitliche Risiken zu geben.
-""")
-
-st.markdown("---")
-st.markdown("### Fit mit Technik: Was dein Körper dir sonst noch sagt")
-
-st.markdown("""
-Mit dem folgenden **BMI-Rechner** kannst du deinen persönlichen Wert berechnen und in einer farblich gekennzeichneten Grafik sehen, in welche Kategorie dein Ergebnis fällt – von *Untergewicht* über *Normalgewicht* bis zu *Adipositas*. Die Darstellung macht deine Einordnung im Gesamtspektrum leicht verständlich.
-
-Der **BMI** ist allerdings nur ein Baustein in der Beurteilung der Gesundheit. Weitere wichtige Messgrößen lassen sich mit moderner Technik erfassen, zum Beispiel:
-""")
-
-# --- Produktempfehlungen ---
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown("""
-    <div class="product-card">
-        <div style="text-align: center; font-size: 4em; margin-bottom: 0.3em;">📊</div>
-        <h4 style="text-align: center; margin-top: 0;">Körperfettwaagen</h4>
-        <p style="text-align: center;">Sie messen neben dem Gewicht auch Körperfettanteil, Muskelmasse und Wasseranteil.</p>
-        <div style="text-align: center; margin-top: 1em;">
-            <a href="https://www.withings.com/de/de/body-comp" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.6em 1.5em; border-radius: 8px; text-decoration: none; font-weight: 600;">Mehr erfahren →</a>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col2:
-    st.markdown("""
-    <div class="product-card">
-        <div style="text-align: center; font-size: 4em; margin-bottom: 0.3em;">⌚</div>
-        <h4 style="text-align: center; margin-top: 0;">Fitness-Tracker</h4>
-        <p style="text-align: center;">Diese liefern Daten zu Herzfrequenz, Schlafqualität, Aktivitätsniveau und mehr.</p>
-        <div style="text-align: center; margin-top: 1em;">
-            <a href="https://www.withings.com/de/de/scanwatch-nova" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.6em 1.5em; border-radius: 8px; text-decoration: none; font-weight: 600;">Mehr erfahren →</a>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown("""
-In Kombination geben diese Werte ein umfassenderes Bild deiner körperlichen Verfassung.
-""")
-st.markdown("---")
-
-# --- Eingaben ---
-st.markdown("""
-<div class="info-box">
-    <h3 style="margin-top: 0;">🧮 Berechne deinen BMI</h3>
-    <p>Gib deine Daten ein, um deinen persönlichen Body-Mass-Index zu berechnen.</p>
-</div>
-""", unsafe_allow_html=True)
-
-col1, col2 = st.columns(2)
-with col1:
-    gewicht = st.number_input("Gewicht (in kg)", min_value=30.0, max_value=300.0, value=75.0)
-with col2:
-    groesse = st.number_input("Größe (in cm)", min_value=100.0, max_value=250.0, value=175.0)
-
-# --- Button ---
-if st.button("✨ BMI berechnen"):
-    bmi = gewicht / ((groesse / 100) ** 2)
-
-    # Bewertung
-    if bmi < 18.5:
-        kategorie = "Untergewicht"
-        farbe = "yellow"
-        kategorie_emoji = "⚠️"
-    elif bmi < 25:
-        kategorie = "Normalgewicht"
-        farbe = "green"
-        kategorie_emoji = "✅"
-    elif bmi < 30:
-        kategorie = "Übergewicht"
-        farbe = "orange"
-        kategorie_emoji = "⚠️"
-    else:
-        kategorie = "Adipositas"
-        farbe = "red"
-        kategorie_emoji = "🔴"
-
-    st.markdown(f"""
-    <div class="info-box" style="border-left-color: {farbe};">
-        <h2 style="margin-top: 0; text-align: center;">Dein BMI: <strong>{bmi:.1f}</strong></h2>
-        <p style="text-align: center; font-size: 1.2em;">{kategorie_emoji} <strong>Kategorie:</strong> {kategorie}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # BMI Verlauf speichern
-    st.session_state.bmi_history.append({
-        'datum': datetime.now(),
-        'bmi': bmi,
-        'gewicht': gewicht,
-        'groesse': groesse
-    })
-
-    # --- Grafik ---
-    fig, ax = plt.subplots(figsize=(8, 1.5))
-
-    bereiche = [
-        (10, 18.5, 'Untergewicht', 'yellow'),
-        (18.5, 25, 'Normalgewicht', 'green'),
-        (25, 30, 'Übergewicht', 'orange'),
-        (30, 40, 'Adipositas', 'red'),
-    ]
-
-    for start, end, label, color in bereiche:
-        ax.axvspan(start, end, color=color, alpha=0.5)
-        ax.text((start + end) / 2, 0.7, label, ha='center', va='center', fontsize=9)
-
-    ax.axvline(bmi, color="black", linewidth=3)
-    ax.text(bmi + 0.4, 0.05, f"{bmi:.1f}", ha='left', va='bottom', fontsize=10, weight='bold')
-
-    ax.set_xlim(10, 40)
-    ax.set_ylim(0, 1.2)
-    ax.set_yticks([])
-    ax.set_xlabel("BMI", fontsize=10)
-    ax.set_title("Einordnung deines BMI", fontsize=12)
-
-    st.pyplot(fig)
-
-# --- BMI Verlauf anzeigen ---
-if len(st.session_state.bmi_history) > 0:
+    # --- Kalorienbedarf-Rechner ---
     st.markdown("---")
-    st.markdown("### 📈 Dein BMI-Verlauf")
-
-    df = pd.DataFrame(st.session_state.bmi_history)
-
-    if len(df) > 1:
-        fig2, ax2 = plt.subplots(figsize=(10, 4))
-        ax2.plot(df['datum'], df['bmi'], marker='o', linewidth=2, markersize=8, color='#667eea')
-        ax2.axhline(y=18.5, color='yellow', linestyle='--', alpha=0.5, label='Untergewicht')
-        ax2.axhline(y=25, color='green', linestyle='--', alpha=0.5, label='Normalgewicht')
-        ax2.axhline(y=30, color='orange', linestyle='--', alpha=0.5, label='Übergewicht')
-        ax2.set_ylabel('BMI', fontsize=11)
-        ax2.set_xlabel('Datum', fontsize=11)
-        ax2.set_title('BMI-Entwicklung über Zeit', fontsize=13, fontweight='bold')
-        ax2.legend()
-        ax2.grid(True, alpha=0.3)
-        plt.xticks(rotation=45)
-        plt.tight_layout()
-        st.pyplot(fig2)
-    else:
-        st.info("📊 Berechne deinen BMI mehrmals, um den Verlauf zu sehen!")
-
-    # Reset-Button für Verlauf
-    if st.button("🗑️ Verlauf löschen"):
-        st.session_state.bmi_history = []
-        st.rerun()
-
-# --- Kalorienbedarf-Rechner ---
-st.markdown("---")
-st.markdown("""
-<div class="info-box">
-    <h3 style="margin-top: 0;">🔥 Kalorienbedarf berechnen</h3>
-    <p>Berechne deinen täglichen Kalorienbedarf basierend auf der Harris-Benedict-Formel.</p>
-</div>
-""", unsafe_allow_html=True)
-
-col1, col2, col3 = st.columns(3)
-with col1:
-    alter = st.number_input("Alter (Jahre)", min_value=10, max_value=120, value=30)
-with col2:
-    geschlecht = st.selectbox("Geschlecht", ["Männlich", "Weiblich"])
-with col3:
-    aktivitaet = st.selectbox("Aktivitätslevel",
-                              ["Sitzend", "Leicht aktiv", "Mäßig aktiv", "Sehr aktiv", "Extrem aktiv"])
-
-if st.button("🔥 Kalorienbedarf berechnen"):
-    # Harris-Benedict-Formel
-    if geschlecht == "Männlich":
-        grundumsatz = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
-    else:
-        grundumsatz = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
-
-    # PAL-Faktoren
-    pal_faktoren = {
-        "Sitzend": 1.2,
-        "Leicht aktiv": 1.375,
-        "Mäßig aktiv": 1.55,
-        "Sehr aktiv": 1.725,
-        "Extrem aktiv": 1.9
-    }
-
-    gesamtumsatz = grundumsatz * pal_faktoren[aktivitaet]
-
-    st.markdown(f"""
+    st.markdown("""
     <div class="info-box">
-        <h3 style="text-align: center;">Dein Kalorienbedarf</h3>
-        <p style="text-align: center; font-size: 1.1em;">
-            💪 <strong>Grundumsatz:</strong> {grundumsatz:.0f} kcal/Tag<br>
-            🔥 <strong>Gesamtumsatz:</strong> {gesamtumsatz:.0f} kcal/Tag
-        </p>
-        <hr>
-        <p style="font-size: 0.95em;">
-            📉 <strong>Abnehmen:</strong> {gesamtumsatz - 500:.0f} kcal/Tag (-500 kcal)<br>
-            ⚖️ <strong>Gewicht halten:</strong> {gesamtumsatz:.0f} kcal/Tag<br>
-            📈 <strong>Zunehmen:</strong> {gesamtumsatz + 500:.0f} kcal/Tag (+500 kcal)
-        </p>
+        <h3 style="margin-top: 0;">🔥 Kalorienbedarf berechnen</h3>
+        <p>Berechne deinen täglichen Kalorienbedarf basierend auf der Harris-Benedict-Formel.</p>
     </div>
     """, unsafe_allow_html=True)
 
-# --- Wasserbedarf-Rechner ---
-st.markdown("---")
-st.markdown("""
-<div class="info-box">
-    <h3 style="margin-top: 0;">💧 Täglicher Wasserbedarf</h3>
-    <p>Berechne, wie viel Wasser du täglich trinken solltest.</p>
-</div>
-""", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        alter = st.number_input("Alter (Jahre)", min_value=10, max_value=120, value=30, key="alter_calorie")
+    with col2:
+        geschlecht = st.selectbox("Geschlecht", ["Männlich", "Weiblich"], key="geschlecht_calorie")
+    with col3:
+        aktivitaet = st.selectbox("Aktivitätslevel",
+                                  ["Sitzend", "Leicht aktiv", "Mäßig aktiv", "Sehr aktiv", "Extrem aktiv"], key="aktivitaet_calorie")
 
-col1, col2 = st.columns(2)
-with col1:
-    sport_minuten = st.number_input("Sport pro Tag (Minuten)", min_value=0, max_value=300, value=30)
-with col2:
-    temperatur = st.selectbox("Außentemperatur", ["< 20°C", "20-25°C", "> 25°C"])
+    # Use the weight and height from BMI calculator if available, otherwise default values
+    gewicht_cal = gewicht if 'gewicht' in locals() else 75.0
+    groesse_cal = groesse if 'groesse' in locals() else 175.0
 
-if st.button("💧 Wasserbedarf berechnen"):
-    # Grundformel: 35ml pro kg Körpergewicht
-    basis_wasserbedarf = gewicht * 0.035
+    if st.button("🔥 Kalorienbedarf berechnen", key="calorie_calculate"):
+        # Harris-Benedict-Formel
+        if geschlecht == "Männlich":
+            grundumsatz = 88.362 + (13.397 * gewicht_cal) + (4.799 * groesse_cal) - (5.677 * alter)
+        else:
+            grundumsatz = 447.593 + (9.247 * gewicht_cal) + (3.098 * groesse_cal) - (4.330 * alter)
 
-    # Zusätzlicher Bedarf durch Sport (0.5L pro 30min)
-    sport_zusatz = (sport_minuten / 30) * 0.5
+        # PAL-Faktoren
+        pal_faktoren = {
+            "Sitzend": 1.2,
+            "Leicht aktiv": 1.375,
+            "Mäßig aktiv": 1.55,
+            "Sehr aktiv": 1.725,
+            "Extrem aktiv": 1.9
+        }
 
-    # Temperatur-Zuschlag
-    temp_faktoren = {
-        "< 20°C": 0,
-        "20-25°C": 0.3,
-        "> 25°C": 0.6
-    }
-    temp_zusatz = temp_faktoren[temperatur]
+        gesamtumsatz = grundumsatz * pal_faktoren[aktivitaet]
 
-    gesamt_wasser = basis_wasserbedarf + sport_zusatz + temp_zusatz
+        st.markdown(f"""
+        <div class="info-box">
+            <h3 style="text-align: center;">Dein Kalorienbedarf</h3>
+            <p style="text-align: center; font-size: 1.1em;">
+                💪 <strong>Grundumsatz:</strong> {grundumsatz:.0f} kcal/Tag<br>
+                🔥 <strong>Gesamtumsatz:</strong> {gesamtumsatz:.0f} kcal/Tag
+            </p>
+            <hr>
+            <p style="font-size: 0.95em;">
+                📉 <strong>Abnehmen:</strong> {gesamtumsatz - 500:.0f} kcal/Tag (-500 kcal)<br>
+                ⚖️ <strong>Gewicht halten:</strong> {gesamtumsatz:.0f} kcal/Tag<br>
+                📈 <strong>Zunehmen:</strong> {gesamtumsatz + 500:.0f} kcal/Tag (+500 kcal)
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown(f"""
+    # --- Wasserbedarf-Rechner ---
+    st.markdown("---")
+    st.markdown("""
     <div class="info-box">
-        <h3 style="text-align: center;">💧 Dein Wasserbedarf</h3>
-        <p style="text-align: center; font-size: 1.3em;">
-            <strong>{gesamt_wasser:.1f} Liter</strong> pro Tag
-        </p>
-        <p style="text-align: center; font-size: 0.95em;">
-            Das entspricht etwa <strong>{int(gesamt_wasser * 4)} Gläser</strong> (à 250ml)
-        </p>
-        <hr>
-        <p style="font-size: 0.9em;">
-            💡 <strong>Tipp:</strong> Trinke regelmäßig über den Tag verteilt.<br>
-            🏃 Bei Sport: Zusätzlich ca. {sport_zusatz:.1f}L<br>
-            🌡️ Bei Hitze: Zusätzlich ca. {temp_zusatz:.1f}L
-        </p>
+        <h3 style="margin-top: 0;">💧 Täglicher Wasserbedarf</h3>
+        <p>Berechne, wie viel Wasser du täglich trinken solltest.</p>
     </div>
     """, unsafe_allow_html=True)
 
-# --- Essen Zeche & Stahl Tetris Game ---
-st.markdown("---")
-st.markdown("""
-<div style="text-align: center; margin-top: 2em;">
-    <h2>⚒️ Essen Zeche & Stahl Tetris - Ruhrpott Challenge! 🏭</h2>
-    <p style="color: #1a1a1a; font-size: 1.1em;">Stapel Kohle und Stahl wie in den alten Zechen und Hochöfen des Ruhrgebiets!</p>
-    <p style="color: #666; font-size: 0.95em;">Eine Hommage an die Industriegeschichte von Essen - Zeche Zollverein, ThyssenKrupp & mehr</p>
-</div>
-""", unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        sport_minuten = st.number_input("Sport pro Tag (Minuten)", min_value=0, max_value=300, value=30, key="sport_water")
+    with col2:
+        temperatur = st.selectbox("Außentemperatur", ["< 20°C", "20-25°C", "> 25°C"], key="temp_water")
 
-tetris_html = """
+    gewicht_water = gewicht if 'gewicht' in locals() else 75.0
+
+    if st.button("💧 Wasserbedarf berechnen", key="water_calculate"):
+        # Grundformel: 35ml pro kg Körpergewicht
+        basis_wasserbedarf = gewicht_water * 0.035
+
+        # Zusätzlicher Bedarf durch Sport (0.5L pro 30min)
+        sport_zusatz = (sport_minuten / 30) * 0.5
+
+        # Temperatur-Zuschlag
+        temp_faktoren = {
+            "< 20°C": 0,
+            "20-25°C": 0.3,
+            "> 25°C": 0.6
+        }
+        temp_zusatz = temp_faktoren[temperatur]
+
+        gesamt_wasser = basis_wasserbedarf + sport_zusatz + temp_zusatz
+
+        st.markdown(f"""
+        <div class="info-box">
+            <h3 style="text-align: center;">💧 Dein Wasserbedarf</h3>
+            <p style="text-align: center; font-size: 1.3em;">
+                <strong>{gesamt_wasser:.1f} Liter</strong> pro Tag
+            </p>
+            <p style="text-align: center; font-size: 0.95em;">
+                Das entspricht etwa <strong>{int(gesamt_wasser * 4)} Gläser</strong> (à 250ml)
+            </p>
+            <hr>
+            <p style="font-size: 0.9em;">
+                💡 <strong>Tipp:</strong> Trinke regelmäßig über den Tag verteilt.<br>
+                🏃 Bei Sport: Zusätzlich ca. {sport_zusatz:.1f}L<br>
+                🌡️ Bei Hitze: Zusätzlich ca. {temp_zusatz:.1f}L
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# ============================================================================
+# TAB 4: GAMES
+# ============================================================================
+with tab4:
+    st.markdown("""
+    <div style="text-align: center; margin-top: 1em;">
+        <h2>⚒️ Essen Zeche & Stahl Tetris - Ruhrpott Challenge! 🏭</h2>
+        <p style="color: #1a1a1a; font-size: 1.1em;">Stapel Kohle und Stahl wie in den alten Zechen und Hochöfen des Ruhrgebiets!</p>
+        <p style="color: #666; font-size: 0.95em;">Eine Hommage an die Industriegeschichte von Essen - Zeche Zollverein, ThyssenKrupp & mehr</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    tetris_html = """
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -1604,28 +1623,30 @@ tetris_html = """
 </html>
 """
 
-components.html(tetris_html, height=900, scrolling=False)
+    components.html(tetris_html, height=900, scrolling=False)
 
-# --- PayPal Donation Section ---
-st.markdown("---")
-st.markdown("""
-<div style="text-align: center; margin-top: 2em; margin-bottom: 2em;">
-    <div class="product-card" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 3px solid #667eea;">
-        <div style="text-align: center; font-size: 3em; margin-bottom: 0.5em;">💝</div>
-        <h3 style="text-align: center; color: white !important; margin-bottom: 0.5em;">
-            Gefällt dir diese App?
-        </h3>
-        <p style="text-align: center; color: white; margin-bottom: 1.5em; font-size: 1.05em;">
-            Wenn dir diese App weitergeholfen hat und du meine Arbeit unterstützen möchtest, freue ich mich über eine kleine Spende!
-        </p>
-        <div style="text-align: center;">
-            <a href="https://paypal.me/GunnarHoffmann2/1" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%); color: white; padding: 1em 2.5em; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1.15em; box-shadow: 0 4px 15px rgba(0, 112, 186, 0.4); transition: all 0.3s ease;">
-                <span style="font-size: 1.3em; margin-right: 0.3em;">💙</span> Spende via PayPal
-            </a>
+# ============================================================================
+# TAB 5: SUPPORT
+# ============================================================================
+with tab5:
+    st.markdown("""
+    <div style="text-align: center; margin-top: 1em; margin-bottom: 2em;">
+        <div class="product-card" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 3px solid #667eea;">
+            <div style="text-align: center; font-size: 3em; margin-bottom: 0.5em;">💝</div>
+            <h3 style="text-align: center; color: white !important; margin-bottom: 0.5em;">
+                Gefällt dir diese App?
+            </h3>
+            <p style="text-align: center; color: white; margin-bottom: 1.5em; font-size: 1.05em;">
+                Wenn dir diese App weitergeholfen hat und du meine Arbeit unterstützen möchtest, freue ich mich über eine kleine Spende!
+            </p>
+            <div style="text-align: center;">
+                <a href="https://paypal.me/GunnarHoffmann2/1" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%); color: white; padding: 1em 2.5em; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1.15em; box-shadow: 0 4px 15px rgba(0, 112, 186, 0.4); transition: all 0.3s ease;">
+                    <span style="font-size: 1.3em; margin-right: 0.3em;">💙</span> Spende via PayPal
+                </a>
+            </div>
+            <p style="text-align: center; color: white; margin-top: 1em; font-size: 0.95em; font-weight: 600;">
+                Vielen Dank für deine Unterstützung!
+            </p>
         </div>
-        <p style="text-align: center; color: white; margin-top: 1em; font-size: 0.95em; font-weight: 600;">
-            Vielen Dank für deine Unterstützung!
-        </p>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
