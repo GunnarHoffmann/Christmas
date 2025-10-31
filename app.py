@@ -330,6 +330,29 @@ st.markdown(f"""
         font-size: 3em;
         margin: 0 10px;
     }}
+
+    /* Snowflake Animation */
+    @keyframes snowfall {{
+        0% {{
+            transform: translateY(-10px) translateX(0);
+            opacity: 1;
+        }}
+        100% {{
+            transform: translateY(100vh) translateX(100px);
+            opacity: 0.3;
+        }}
+    }}
+
+    .snowflake {{
+        position: fixed;
+        top: -10px;
+        color: white;
+        font-size: 1em;
+        animation: snowfall linear infinite;
+        pointer-events: none;
+        z-index: 9999;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -341,6 +364,30 @@ st.markdown("""
 <div class="santa-container">
     <div class="santa">🎅🛷</div>
 </div>
+""", unsafe_allow_html=True)
+
+# --- Falling Snowflakes ---
+st.markdown("""
+<div class="snowflake" style="left: 10%; animation-duration: 10s; animation-delay: 0s; font-size: 1.5em;">❄</div>
+<div class="snowflake" style="left: 20%; animation-duration: 12s; animation-delay: 2s; font-size: 1.2em;">❄</div>
+<div class="snowflake" style="left: 30%; animation-duration: 15s; animation-delay: 1s; font-size: 1.0em;">❄</div>
+<div class="snowflake" style="left: 40%; animation-duration: 11s; animation-delay: 3s; font-size: 1.8em;">❄</div>
+<div class="snowflake" style="left: 50%; animation-duration: 13s; animation-delay: 0.5s; font-size: 1.4em;">❄</div>
+<div class="snowflake" style="left: 60%; animation-duration: 14s; animation-delay: 2.5s; font-size: 1.1em;">❄</div>
+<div class="snowflake" style="left: 70%; animation-duration: 16s; animation-delay: 1.5s; font-size: 1.6em;">❄</div>
+<div class="snowflake" style="left: 80%; animation-duration: 12s; animation-delay: 3.5s; font-size: 1.3em;">❄</div>
+<div class="snowflake" style="left: 90%; animation-duration: 13s; animation-delay: 0.8s; font-size: 1.7em;">❄</div>
+<div class="snowflake" style="left: 15%; animation-duration: 11s; animation-delay: 4s; font-size: 1.2em;">❄</div>
+<div class="snowflake" style="left: 25%; animation-duration: 15s; animation-delay: 2.2s; font-size: 1.5em;">❄</div>
+<div class="snowflake" style="left: 35%; animation-duration: 14s; animation-delay: 1.8s; font-size: 1.0em;">❄</div>
+<div class="snowflake" style="left: 45%; animation-duration: 12s; animation-delay: 3.2s; font-size: 1.9em;">❄</div>
+<div class="snowflake" style="left: 55%; animation-duration: 13s; animation-delay: 0.3s; font-size: 1.3em;">❄</div>
+<div class="snowflake" style="left: 65%; animation-duration: 16s; animation-delay: 2.8s; font-size: 1.1em;">❄</div>
+<div class="snowflake" style="left: 75%; animation-duration: 11s; animation-delay: 1.2s; font-size: 1.6em;">❄</div>
+<div class="snowflake" style="left: 85%; animation-duration: 14s; animation-delay: 3.8s; font-size: 1.4em;">❄</div>
+<div class="snowflake" style="left: 95%; animation-duration: 15s; animation-delay: 0.6s; font-size: 1.2em;">❄</div>
+<div class="snowflake" style="left: 5%; animation-duration: 12s; animation-delay: 2.6s; font-size: 1.7em;">❄</div>
+<div class="snowflake" style="left: 12%; animation-duration: 13s; animation-delay: 4.2s; font-size: 1.0em;">❄</div>
 """, unsafe_allow_html=True)
 
 # --- User Authentication Section ---
