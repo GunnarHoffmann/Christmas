@@ -476,7 +476,7 @@ st.markdown(f"""
     }}
 
     .dog {{
-        font-size: 4em;
+        font-size: 7em;
         text-align: center;
         filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
         display: inline-block;
