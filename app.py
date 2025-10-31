@@ -286,11 +286,62 @@ st.markdown(f"""
         font-weight: 600;
         margin-top: 1em;
     }}
+
+    /* Santa Claus Animation */
+    @keyframes santaSlide {{
+        0% {{
+            transform: translateX(-100px) rotate(-5deg);
+        }}
+        50% {{
+            transform: translateX(calc(50vw - 50px)) rotate(5deg);
+        }}
+        100% {{
+            transform: translateX(calc(100vw + 100px)) rotate(-5deg);
+        }}
+    }}
+
+    .santa-container {{
+        position: fixed;
+        bottom: 20px;
+        left: 0;
+        z-index: 9999;
+        animation: santaSlide 15s ease-in-out infinite;
+        pointer-events: none;
+    }}
+
+    .santa {{
+        font-size: 4em;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    }}
+
+    /* Floating Santa near title */
+    @keyframes santaFloat {{
+        0%, 100% {{
+            transform: translateY(0) rotate(-10deg);
+        }}
+        50% {{
+            transform: translateY(-20px) rotate(10deg);
+        }}
+    }}
+
+    .santa-title {{
+        display: inline-block;
+        animation: santaFloat 3s ease-in-out infinite;
+        font-size: 3em;
+        margin: 0 10px;
+    }}
     </style>
 """, unsafe_allow_html=True)
 
 # --- Titel ---
-st.markdown("<h1>🎄 Gesundheits & Wellness Center</h1>", unsafe_allow_html=True)
+st.markdown("<h1>🎄 Gesundheits & Wellness Center <span class='santa-title'>🎅</span></h1>", unsafe_allow_html=True)
+
+# --- Animated Santa sliding across the screen ---
+st.markdown("""
+<div class="santa-container">
+    <div class="santa">🎅🛷</div>
+</div>
+""", unsafe_allow_html=True)
 
 # --- User Authentication Section ---
 if st.session_state.user_info:
