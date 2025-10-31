@@ -23,7 +23,7 @@ import base64
 # Load environment variables
 load_dotenv()
 
-# --- Seitenlayout ---
+# --- Seitenlayout ----
 st.set_page_config(
     page_title="Gesundheits & Wellness Center",
     page_icon="🎄",
