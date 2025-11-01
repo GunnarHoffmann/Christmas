@@ -152,97 +152,191 @@ dark_mode = st.session_state.dark_mode
 if dark_mode:
     bg_gradient = "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)"
     text_color = "#eaeaea"
-    card_bg = "#0f3460"
+    card_bg = "rgba(15, 52, 96, 0.7)"
     border_color = "#e94560"
+    accent_color = "#e94560"
 else:
-    bg_gradient = "linear-gradient(135deg, #0a1929 0%, #1a2332 50%, #2d3e50 100%)"
+    bg_gradient = "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)"
     text_color = "#ffffff"
-    card_bg = "#2d3e50"
-    border_color = "#667eea"
+    card_bg = "rgba(255, 255, 255, 0.15)"
+    border_color = "#ffffff"
+    accent_color = "#667eea"
 
 st.markdown(f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
 
     html, body, .main {{
         background: {bg_gradient} !important;
         color: {text_color} !important;
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
     }}
 
-    /* Make all headings outside of boxed containers blue */
+    /* Make all headings outside of boxed containers with gradient */
     h1, h2, h3, h4, h5, h6 {{
-        color: #667eea !important; /* blue for titles outside boxes */
-        font-weight: 600;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
         margin-bottom: 0.5em;
+        text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
     }}
 
     h1 {{
-        font-size: 2.5em;
+        font-size: 2.8em;
         text-align: center;
-        font-weight: 700;
+        font-weight: 800;
+        letter-spacing: -0.02em;
     }}
 
     .stButton>button {{
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        border-radius: 12px;
-        padding: 0.75em 2em;
-        font-weight: 600;
+        border-radius: 16px;
+        padding: 0.9em 2.2em;
+        font-weight: 700;
         border: none;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35), 0 2px 8px rgba(0, 0, 0, 0.15);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         width: 100%;
         font-size: 1.1em;
+        position: relative;
+        overflow: hidden;
+    }}
+
+    .stButton>button::before {{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s;
+    }}
+
+    .stButton>button:hover::before {{
+        left: 100%;
     }}
 
     .stButton>button:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5), 0 4px 12px rgba(0, 0, 0, 0.2);
+    }}
+
+    .stButton>button:active {{
+        transform: translateY(-1px) scale(1.0);
     }}
 
     /* Input Felder */
-    .stNumberInput > div > div > input {{
-        border-radius: 10px;
-        border: 2px solid #e0e7ff;
-        padding: 0.75em;
-        font-size: 1.1em;
-        transition: all 0.3s ease;
+    .stNumberInput > div > div > input, .stTextInput > div > div > input {{
+        border-radius: 14px;
+        border: 2px solid rgba(102, 126, 234, 0.3);
+        padding: 0.9em 1.2em;
+        font-size: 1.05em;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
     }}
 
-    .stNumberInput > div > div > input:focus {{
+    .stNumberInput > div > div > input:focus, .stTextInput > div > div > input:focus {{
         border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), 0 8px 20px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
     }}
 
-    /* Info Boxen */
+    .stSelectbox > div > div {{
+        border-radius: 14px;
+        border: 2px solid rgba(102, 126, 234, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+    }}
+
+    /* Info Boxen mit Glassmorphismus */
     .info-box {{
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 15px;
-        padding: 1.5em;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin: 1em 0;
-        border-left: 4px solid white;
+        background: {card_bg};
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 2em;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2),
+                    0 2px 8px rgba(0, 0, 0, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        margin: 1.5em 0;
+        border: 2px solid {border_color}33;
         color: white;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }}
 
-    /* Produktkarten */
+    .info-box::before {{
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }}
+
+    .info-box:hover {{
+        transform: translateY(-5px);
+        box-shadow: 0 12px 48px rgba(102, 126, 234, 0.3),
+                    0 4px 16px rgba(0, 0, 0, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }}
+
+    .info-box:hover::before {{
+        opacity: 1;
+    }}
+
+    /* Produktkarten mit modernem Design */
     .product-card {{
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 15px;
-        padding: 1.5em;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin: 1em 0;
-        transition: all 0.3s ease;
-        min-height: 280px;
+        background: {card_bg};
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 2em;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.25),
+                    0 2px 8px rgba(0, 0, 0, 0.12),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        margin: 1.5em 0;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        min-height: 300px;
         display: flex;
         flex-direction: column;
         color: white;
+        border: 2px solid {border_color}33;
+        position: relative;
+        overflow: hidden;
+    }}
+
+    .product-card::after {{
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        transform: scaleX(0);
+        transition: transform 0.5s ease;
     }}
 
     .product-card:hover {{
-        transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 16px 48px rgba(102, 126, 234, 0.35),
+                    0 4px 16px rgba(0, 0, 0, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }}
+
+    .product-card:hover::after {{
+        transform: scaleX(1);
     }}
 
     /* Text in boxed components should remain white */
@@ -266,12 +360,39 @@ st.markdown(f"""
         color: #764ba2;
     }}
 
-    /* Divider */
+    /* Divider - Verbessert */
     hr {{
         border: none;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #667eea, transparent);
-        margin: 2em 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #667eea 20%, #764ba2 50%, #f093fb 80%, transparent);
+        margin: 2.5em 0;
+        border-radius: 2px;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    }}
+
+    /* Tabs Styling */
+    .stTabs [data-baseweb="tab-list"] {{
+        gap: 8px;
+    }}
+
+    .stTabs [data-baseweb="tab"] {{
+        border-radius: 12px;
+        padding: 10px 20px;
+        background: {card_bg};
+        backdrop-filter: blur(10px);
+        border: 2px solid {border_color}33;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }}
+
+    .stTabs [data-baseweb="tab"]:hover {{
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        border-color: {border_color};
+    }}
+
+    .stTabs [aria-selected="true"] {{
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: transparent;
     }}
 
     /* Markdown Text */
@@ -287,16 +408,22 @@ st.markdown(f"""
         margin-top: 1em;
     }}
 
-    /* Santa Claus Animation */
+    /* Santa Claus Animation - Verbessert */
     @keyframes santaSlide {{
         0% {{
-            transform: translateX(-100px) rotate(-5deg);
+            transform: translateX(-100px) translateY(0) rotate(-5deg) scale(1);
+        }}
+        25% {{
+            transform: translateX(calc(25vw - 50px)) translateY(-10px) rotate(0deg) scale(1.05);
         }}
         50% {{
-            transform: translateX(calc(50vw - 50px)) rotate(5deg);
+            transform: translateX(calc(50vw - 50px)) translateY(0) rotate(5deg) scale(1);
+        }}
+        75% {{
+            transform: translateX(calc(75vw - 50px)) translateY(-10px) rotate(0deg) scale(1.05);
         }}
         100% {{
-            transform: translateX(calc(100vw + 100px)) rotate(-5deg);
+            transform: translateX(calc(100vw + 100px)) translateY(0) rotate(-5deg) scale(1);
         }}
     }}
 
@@ -305,39 +432,52 @@ st.markdown(f"""
         bottom: 20px;
         left: 0;
         z-index: 9999;
-        animation: santaSlide 15s ease-in-out infinite;
+        animation: santaSlide 20s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         pointer-events: none;
     }}
 
     .santa {{
-        font-size: 4em;
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        font-size: 4.5em;
+        filter: drop-shadow(0 6px 12px rgba(102, 126, 234, 0.4)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
     }}
 
-    /* Floating Santa near title */
+    /* Floating Santa near title - Verbessert */
     @keyframes santaFloat {{
         0%, 100% {{
-            transform: translateY(0) rotate(-10deg);
+            transform: translateY(0) rotate(-10deg) scale(1);
+        }}
+        25% {{
+            transform: translateY(-10px) rotate(-5deg) scale(1.05);
         }}
         50% {{
-            transform: translateY(-20px) rotate(10deg);
+            transform: translateY(-20px) rotate(10deg) scale(1.1);
+        }}
+        75% {{
+            transform: translateY(-10px) rotate(5deg) scale(1.05);
         }}
     }}
 
     .santa-title {{
         display: inline-block;
-        animation: santaFloat 3s ease-in-out infinite;
-        font-size: 3em;
-        margin: 0 10px;
+        animation: santaFloat 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        font-size: 3.5em;
+        margin: 0 15px;
+        filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.3));
     }}
 
-    /* Spider Animation */
+    /* Spider Animation - Verbessert */
     @keyframes spiderDangle {{
         0%, 100% {{
-            transform: translateY(0) rotate(-5deg);
+            transform: translateY(0) rotate(-8deg) scale(1);
+        }}
+        25% {{
+            transform: translateY(8px) rotate(-3deg) scale(1.02);
         }}
         50% {{
-            transform: translateY(15px) rotate(5deg);
+            transform: translateY(15px) rotate(8deg) scale(1.05);
+        }}
+        75% {{
+            transform: translateY(8px) rotate(3deg) scale(1.02);
         }}
     }}
 
@@ -350,29 +490,42 @@ st.markdown(f"""
     }}
 
     .spider-web {{
-        width: 2px;
-        height: 80px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.7));
+        width: 3px;
+        height: 90px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.8));
         margin: 0 auto;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }}
 
     .spider {{
-        font-size: 3em;
-        animation: spiderDangle 2s ease-in-out infinite;
+        font-size: 3.2em;
+        animation: spiderDangle 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         display: block;
         text-align: center;
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        filter: drop-shadow(0 6px 12px rgba(102, 126, 234, 0.4)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
     }}
 
-    /* Snowflake Animation */
+    /* Snowflake Animation - Verbessert */
     @keyframes snowfall {{
         0% {{
-            transform: translateY(-10px) translateX(0);
+            transform: translateY(-10px) translateX(0) rotate(0deg) scale(1);
             opacity: 1;
         }}
+        25% {{
+            transform: translateY(25vh) translateX(25px) rotate(90deg) scale(1.1);
+            opacity: 0.9;
+        }}
+        50% {{
+            transform: translateY(50vh) translateX(50px) rotate(180deg) scale(0.9);
+            opacity: 0.7;
+        }}
+        75% {{
+            transform: translateY(75vh) translateX(75px) rotate(270deg) scale(1.05);
+            opacity: 0.5;
+        }}
         100% {{
-            transform: translateY(100vh) translateX(100px);
-            opacity: 0.3;
+            transform: translateY(100vh) translateX(100px) rotate(360deg) scale(1);
+            opacity: 0.2;
         }}
     }}
 
@@ -384,20 +537,28 @@ st.markdown(f"""
         animation: snowfall linear infinite;
         pointer-events: none;
         z-index: 9999;
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 15px rgba(102, 126, 234, 0.5);
+        filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
     }}
 
-    /* Spider Animation */
+    /* Spider Swing Animation - Verbessert */
     @keyframes spiderSwing {{
         0%, 100% {{
-            transform: rotate(-5deg);
+            transform: rotate(-8deg) scale(1);
+        }}
+        25% {{
+            transform: rotate(-3deg) scale(1.02);
         }}
         50% {{
-            transform: rotate(5deg);
+            transform: rotate(8deg) scale(1.05);
+        }}
+        75% {{
+            transform: rotate(3deg) scale(1.02);
         }}
     }}
 
-    .spider-container {{
+    /* Zweite Spinne rechts oben */
+    .spider-container:nth-of-type(2) {{
         position: fixed;
         top: 50px;
         right: 50px;
@@ -405,29 +566,35 @@ st.markdown(f"""
         pointer-events: none;
     }}
 
-    .spider-web {{
-        width: 2px;
-        height: 100px;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3));
+    .spider-container:nth-of-type(2) .spider-web {{
+        width: 3px;
+        height: 110px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8));
         margin: 0 auto;
-        box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
     }}
 
-    .spider {{
-        font-size: 3em;
+    .spider-container:nth-of-type(2) .spider {{
+        font-size: 3.2em;
         text-align: center;
-        animation: spiderSwing 3s ease-in-out infinite;
+        animation: spiderSwing 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         transform-origin: top center;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+        filter: drop-shadow(0 6px 12px rgba(102, 126, 234, 0.4)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
     }}
 
-    /* Cat Animation */
+    /* Cat Animation - Verbessert */
     @keyframes catSway {{
         0%, 100% {{
-            transform: rotate(-3deg);
+            transform: rotate(-5deg) scale(1);
+        }}
+        25% {{
+            transform: rotate(-2deg) scale(1.03);
         }}
         50% {{
-            transform: rotate(3deg);
+            transform: rotate(5deg) scale(1.08);
+        }}
+        75% {{
+            transform: rotate(2deg) scale(1.03);
         }}
     }}
 
@@ -440,29 +607,40 @@ st.markdown(f"""
     }}
 
     .cat {{
-        font-size: 3em;
+        font-size: 3.5em;
         text-align: center;
-        animation: catSway 2.5s ease-in-out infinite;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-    /* Dog Animation */
+        animation: catSway 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        filter: drop-shadow(0 6px 12px rgba(102, 126, 234, 0.4)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+    }}
+
+    /* Dog Animation - Verbessert */
     @keyframes dogBounce {{
         0%, 100% {{
-            transform: translateY(0) rotate(-5deg);
+            transform: translateY(0) rotate(-5deg) scale(1);
+        }}
+        25% {{
+            transform: translateY(-8px) rotate(-2deg) scale(1.02);
         }}
         50% {{
-            transform: translateY(-15px) rotate(5deg);
+            transform: translateY(-18px) rotate(5deg) scale(1.05);
+        }}
+        75% {{
+            transform: translateY(-8px) rotate(2deg) scale(1.02);
         }}
     }}
 
     @keyframes dogWag {{
         0%, 100% {{
-            transform: rotate(0deg);
+            transform: rotate(0deg) scale(1);
         }}
         25% {{
-            transform: rotate(-10deg);
+            transform: rotate(-12deg) scale(1.05);
+        }}
+        50% {{
+            transform: rotate(0deg) scale(1);
         }}
         75% {{
-            transform: rotate(10deg);
+            transform: rotate(12deg) scale(1.05);
         }}
     }}
 
@@ -472,19 +650,19 @@ st.markdown(f"""
         bottom: 150px;
         z-index: 9999;
         pointer-events: none;
-        animation: dogBounce 2s ease-in-out infinite;
+        animation: dogBounce 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }}
 
     .dog {{
-        font-size: clamp(4rem, 10vw, 7rem);
+        font-size: clamp(4.5rem, 10vw, 7.5rem);
         text-align: center;
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        filter: drop-shadow(0 8px 16px rgba(102, 126, 234, 0.4)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
         display: inline-block;
     }}
 
     .dog-tail {{
         display: inline-block;
-        animation: dogWag 0.5s ease-in-out infinite;
+        animation: dogWag 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         transform-origin: left center;
     }}
     </style>
